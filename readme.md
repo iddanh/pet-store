@@ -4,3 +4,4 @@ Pet store website.
 
 ### Authors
 - Iddan Halevy
+- Amit Zilber
