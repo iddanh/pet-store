@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pet-store", "pet-store\pet-store.csproj", "{6CD80794-231E-4DA4-8381-454B094596D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pet-store", "pet-store\pet-store.csproj", "{6CD80794-231E-4DA4-8381-454B094596D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D04B827-0F8E-424B-8160-FACF2D8B0860}"
 	ProjectSection(SolutionItems) = preProject
