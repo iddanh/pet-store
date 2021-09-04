@@ -6,3 +6,4 @@ Pet store website.
 - Iddan Halevy
 - Itai Levy
 - Amit Zilber
+- Amit Sela
