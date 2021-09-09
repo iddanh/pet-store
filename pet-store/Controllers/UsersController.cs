@@ -82,18 +82,19 @@ namespace pet_store.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        private async void loginUser(string email, UserType type)
+        private async void loginUser(User user)
         {
             // HttpContext.Session.SetString("username", username);
 
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, email),
-                    new Claim(ClaimTypes.Role, type.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Role, user.Type.ToString()),
                 };
 
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
             {
@@ -121,14 +122,14 @@ namespace pet_store.Controllers
         {
             if (ModelState.IsValid)
             {
-                var q = from    u in _context.User
-                        where   u.Email == user.Email &&
+                var q = from u in _context.User
+                        where u.Email == user.Email &&
                                 u.Password == user.Password
                         select u;
 
                 if (q.Count() > 0)
                 {
-                    loginUser(q.First().Email, q.First().Type);
+                    loginUser(q.First());
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -140,13 +141,8 @@ namespace pet_store.Controllers
         }
 
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var user = await _context.User.FindAsync(id);
             if (user == null)
             {
@@ -160,9 +156,9 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Email,Password,Type")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Password,Type")] User user)
         {
-            if (id != user.Email)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -176,7 +172,7 @@ namespace pet_store.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Email))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -191,15 +187,10 @@ namespace pet_store.Controllers
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Email == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -211,7 +202,7 @@ namespace pet_store.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _context.User.FindAsync(id);
             _context.User.Remove(user);
@@ -219,9 +210,9 @@ namespace pet_store.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(string id)
+        private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.Email == id);
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }
