@@ -27,9 +27,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users Index</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products Index</a>
+                        </li>
                     </ul>
                     @{
-                        if (Context != null && Context.User.Identity.Name != null)
+                        if (Context != null && Context.User.Identity.IsAuthenticated)
                         {
                             <div>Hello @Context.User.Identity.Name,&nbsp;</div>
                             <a asp-controller="Users" asp-action="Logout">Logout</a>
