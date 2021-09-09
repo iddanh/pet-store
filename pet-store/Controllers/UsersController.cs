@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using pet_store.Models;
+using pet_store.Services;
 
 namespace pet_store.Controllers
 {
@@ -28,7 +29,7 @@ namespace pet_store.Controllers
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = nameof(UserType.Admin))]
         // GET: Users
         public async Task<IActionResult> Index()
         {
@@ -36,7 +37,7 @@ namespace pet_store.Controllers
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -44,7 +45,7 @@ namespace pet_store.Controllers
             }
 
             var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Email == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -64,15 +65,44 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("Email,Password")] User user)
+        public async Task<IActionResult> Register([Bind("FullName,Email,Password")] User user)
         {
             if (ModelState.IsValid)
             {
+                user.RegisterTime = DateTime.Now;
                 _context.Add(user);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                loginUser(user);
             }
             return View(user);
+        }
+
+        // GET: Users/Create
+        public IActionResult RegisterSupplier()
+        {
+            return View();
+        }
+
+        // POST: Users/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterSupplier(int id, [Bind("CompanyName,CompanyId")] Supplier supplier)
+        {
+
+            if (ModelState.IsValid)
+            {
+                supplier.Id = id;
+                _context.Add(supplier);
+
+                var user = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
+                user.Type = UserType.Supplier;
+                _context.Update(user);
+
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Details), supplier.Id);
         }
 
         public async Task<IActionResult> Logout()
@@ -130,7 +160,7 @@ namespace pet_store.Controllers
                 if (q.Count() > 0)
                 {
                     loginUser(q.First());
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", "Products");
                 }
                 else
                 {
@@ -148,6 +178,11 @@ namespace pet_store.Controllers
             {
                 return NotFound();
             }
+
+            if (user.Id != User.GetLoggedInUserId() && !User.IsAdmin())
+            {
+                return Forbid();
+            }
             return View(user);
         }
 
@@ -156,11 +191,16 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Password,Type")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Email,Password")] User user)
         {
             if (id != user.Id)
             {
                 return NotFound();
+            }
+
+            if (user.Id != User.GetLoggedInUserId() && !User.IsAdmin())
+            {
+                return Forbid();
             }
 
             if (ModelState.IsValid)

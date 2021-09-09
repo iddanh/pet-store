@@ -19,5 +19,7 @@ namespace pet_store.Data
         public DbSet<pet_store.Models.Category> Category { get; set; }
 
         public DbSet<pet_store.Models.Product> Product { get; set; }
+
+        public DbSet<pet_store.Models.Supplier> Supplier { get; set; }
     }
 }

@@ -55,6 +55,10 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - Chewy - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @if (Context != null && Context.User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="Users" asp-action="RegisterSupplier" asp-route-id="@Context.User.Claims.First().Value">Become a supplier</a>
+            }
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
