@@ -63,7 +63,6 @@ namespace pet_store
             app.UseRouting();
 
             app.UseSession();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
