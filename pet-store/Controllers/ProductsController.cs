@@ -35,8 +35,7 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -57,6 +56,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(UserType.Supplier))]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Category,Price,Company,Image")] Product product)
         {
             if (ModelState.IsValid)
@@ -85,7 +85,7 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            if (product.Supplier != User.GetLoggedInUserId())
+            if (!AllowedModifyProduct(product.Supplier))
             {
                 return Forbid();
             }
@@ -104,7 +104,7 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            if (product.Supplier != User.GetLoggedInUserId())
+            if (!AllowedModifyProduct(product.Supplier))
             {
                 return Forbid();
             }
@@ -140,11 +140,15 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
+            }
+
+            if (!AllowedModifyProduct(product.Supplier))
+            {
+                return Forbid();
             }
 
             return View(product);
@@ -156,9 +160,17 @@ namespace pet_store.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Product.FindAsync(id);
+            if (!AllowedModifyProduct(product.Supplier))
+            {
+                return Forbid();
+            }
             _context.Product.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        private bool AllowedModifyProduct(int productId)
+        {
+            return productId == User.GetLoggedInUserId() || User.IsAdmin();
         }
 
         private bool ProductExists(int id)

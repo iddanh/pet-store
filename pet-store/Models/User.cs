@@ -31,5 +31,9 @@ namespace pet_store.Models
         public UserType Type { get; set; } = UserType.Customer;
 
         public DateTime RegisterTime { get; set; }
+
+        public string CompanyName { get; set; }
+
+        public string CompanyId { get; set; }
     }
 }

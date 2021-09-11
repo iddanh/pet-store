@@ -44,11 +44,14 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
+            }
+            if (!AllowedModifyUser(user.Id))
+            {
+                return Forbid();
             }
 
             return View(user);
@@ -88,21 +91,17 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterSupplier(int id, [Bind("CompanyName,CompanyId")] Supplier supplier)
+        public async Task<IActionResult> RegisterSupplier(int id, [Bind("CompanyName,CompanyId")] User supplier)
         {
+            var user = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
+            user.Type = UserType.Supplier;
+            user.CompanyName = supplier.CompanyName;
+            user.CompanyId = supplier.CompanyId;
+            _context.Update(user);
 
-            if (ModelState.IsValid)
-            {
-                supplier.Id = id;
-                _context.Add(supplier);
-
-                var user = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
-                user.Type = UserType.Supplier;
-                _context.Update(user);
-
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction(nameof(Details), supplier.Id);
+            await _context.SaveChangesAsync();
+            loginUser(user);
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         public async Task<IActionResult> Logout()
@@ -148,7 +147,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([Bind("Email,Password")] User user)
+        public IActionResult Login([Bind("Email,Password")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -179,7 +178,7 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            if (user.Id != User.GetLoggedInUserId() && !User.IsAdmin())
+            if (!AllowedModifyUser(user.Id))
             {
                 return Forbid();
             }
@@ -198,7 +197,7 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            if (user.Id != User.GetLoggedInUserId() && !User.IsAdmin())
+            if (!AllowedModifyUser(user.Id))
             {
                 return Forbid();
             }
@@ -227,10 +226,10 @@ namespace pet_store.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Delete(int id)
         {
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -240,6 +239,7 @@ namespace pet_store.Controllers
         }
 
         // POST: Users/Delete/5
+        [Authorize(Roles = nameof(UserType.Admin))]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -248,6 +248,10 @@ namespace pet_store.Controllers
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        private bool AllowedModifyUser(int id)
+        {
+            return id == User.GetLoggedInUserId() || User.IsAdmin();
         }
 
         private bool UserExists(int id)
