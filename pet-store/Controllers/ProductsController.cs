@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace pet_store.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
+            return View(await _context.Product.Include(p => p.Category).ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -48,6 +49,14 @@ namespace pet_store.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            //var categories = _context.Category.FirstOrDefault();
+            //TODO In the case of no categories
+
+            /*if (categories == null)
+            {
+                return View("CategoryDoesNotexist");
+            }*/
+            ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
 
@@ -57,12 +66,13 @@ namespace pet_store.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = nameof(UserType.Supplier))]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Category,Price,Company,Image")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,CategoryId,Price,Company,Image")] Product product)
         {
             if (ModelState.IsValid)
             {
                 // Attach the current logged in user id to the new product being created
-                product.Supplier = User.GetLoggedInUserId();
+                product.Supplier = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
 
                 _context.Add(product);
                 await _context.SaveChangesAsync();
@@ -89,6 +99,8 @@ namespace pet_store.Controllers
             {
                 return Forbid();
             }
+            ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
+
             return View(product);
         }
 
@@ -97,7 +109,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Category,Price,Company,Image")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,CategoryId,Price,Company,Image")] Product product)
         {
             if (id != product.Id)
             {
@@ -113,6 +125,8 @@ namespace pet_store.Controllers
             {
                 try
                 {
+                    product.Supplier = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
