@@ -24,9 +24,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users Index</a>
-                        </li>
+                        @if (Context != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Admin)))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users Index</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products Index</a>
                         </li>
@@ -34,7 +37,7 @@
                     @{
                         if (Context != null && Context.User.Identity.IsAuthenticated)
                         {
-                            <div>Hello @Context.User.Identity.Name,&nbsp;</div>
+                            <div>Hello <a asp-controller="Users" asp-action="Details" asp-route-id="@Context.User.Claims.First().Value">@Context.User.Identity.Name</a>,&nbsp;</div>
                             <a asp-controller="Users" asp-action="Logout">Logout</a>
                         }
                         else
@@ -55,6 +58,10 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - Chewy - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @if (Context != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Customer)))
+            {
+                <span>&nbsp;| &nbsp;</span><a asp-controller="Users" asp-action="RegisterSupplier" asp-route-id="@Context.User.Claims.First().Value">Become a supplier</a>
+            }
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
