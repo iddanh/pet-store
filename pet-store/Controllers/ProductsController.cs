@@ -25,7 +25,7 @@ namespace pet_store.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.Include(p => p.Category).ToListAsync());
+            return View(await _context.Product.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -71,7 +71,7 @@ namespace pet_store.Controllers
             if (ModelState.IsValid)
             {
                 // Attach the current logged in user id to the new product being created
-                product.Supplier = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
+                product.Supplier = User.GetLoggedInUserId();
 
 
                 _context.Add(product);
@@ -125,8 +125,6 @@ namespace pet_store.Controllers
             {
                 try
                 {
-                    product.Supplier = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
-
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
