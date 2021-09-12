@@ -25,7 +25,10 @@ namespace pet_store.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
+            var product = await _context.Category.ToListAsync();
+            
             return View(await _context.Product.ToListAsync());
+
         }
 
         // GET: Products/Details/5
@@ -36,7 +39,11 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            //var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
+
             if (product == null)
             {
                 return NotFound();
@@ -49,6 +56,7 @@ namespace pet_store.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+
             //var categories = _context.Category.FirstOrDefault();
             //TODO In the case of no categories
 
@@ -152,7 +160,11 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.Include(p => p.Category)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            //var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
+            
             if (product == null)
             {
                 return NotFound();
