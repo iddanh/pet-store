@@ -41,6 +41,7 @@
             <div class="form-group">
                 <input type="hidden" asp-for="Image" id="image_input" />
                 <button class="btn btn-outline-info" id="upload_widget" type="button">Upload Image</button>
+                <img id="image_preview" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -58,12 +59,14 @@
         const options = {
             cloudName: 'iddanh',
             apiKey: '184519112571914',
-            uploadPreset: 'unsigned'
+            uploadPreset: 'unsigned',
+            googleApiKey: 'AIzaSyBkN-oAACs5jkJLiENYPQs_jTUWIyNXHfo'
         };
 
         const processResults = (error, result) => {
             if (!error && result && result.event === 'success') {
                 document.getElementById('image_input').value = result.info.secure_url;
+                document.getElementById('image_preview').src = result.info.thumbnail_url;
             }
         };
 
