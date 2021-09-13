@@ -4,6 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
 <h1>Edit</h1>
 
 <h4>Product</h4>
@@ -13,6 +15,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Supplier" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -38,6 +41,10 @@
                 <span asp-validation-for="Company" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <input type="hidden" asp-for="Image" id="image_input" />
+                <button class="btn btn-outline-info" id="upload_widget" type="button">Replace Image</button>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -47,6 +54,30 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', async () => {
+        const options = {
+            cloudName: 'iddanh',
+            apiKey: '184519112571914',
+            uploadPreset: 'unsigned'
+        };
+
+        const processResults = (error, result) => {
+            if (!error && result && result.event === 'success') {
+                document.getElementById('image_input').value = result.info.secure_url;
+            }
+        };
+
+        const myWidget = window.cloudinary.createUploadWidget(
+            options,
+            processResults
+        );
+        document
+            .getElementById('upload_widget')
+            .addEventListener('click', () => myWidget.open(), false);
+    })
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
