@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -34,8 +35,7 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Category.Include(c => c.Products).FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -45,6 +45,7 @@ namespace pet_store.Controllers
         }
 
         // GET: Categories/Create
+        [Authorize(Roles = nameof(UserType.Admin))]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +56,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
         {
             if (ModelState.IsValid)
@@ -67,6 +69,7 @@ namespace pet_store.Controllers
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,6 +90,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
         {
             if (id != category.Id)
@@ -118,6 +122,7 @@ namespace pet_store.Controllers
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,6 +143,7 @@ namespace pet_store.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _context.Category.FindAsync(id);

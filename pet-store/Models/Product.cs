@@ -25,7 +25,7 @@ namespace pet_store.Models
         [Display(Name = "Category")]
         [Required]
         public int CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
+
         public Category Category { get; set; }
 
         [Required]

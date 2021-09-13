@@ -26,7 +26,7 @@ namespace pet_store.Controllers
         public async Task<IActionResult> Index()
         {
             var product = await _context.Category.ToListAsync();
-            
+
             return View(await _context.Product.ToListAsync());
 
         }
@@ -39,10 +39,7 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product.Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            //var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
 
             if (product == null)
             {
@@ -117,7 +114,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,CategoryId,Price,Company,Image")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Supplier,Name,Description,CategoryId,Price,Company,Image")] Product product)
         {
             if (id != product.Id)
             {
@@ -160,11 +157,8 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Product.Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Product.Include(p => p.Category).FirstOrDefaultAsync(m => m.Id == id);
 
-            //var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
-            
             if (product == null)
             {
                 return NotFound();
