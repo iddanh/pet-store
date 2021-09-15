@@ -16,10 +16,12 @@ namespace pet_store.Controllers
     public class ProductsController : Controller
     {
         private readonly pet_storeContext _context;
+        private readonly ProductsService _service;
 
-        public ProductsController(pet_storeContext context)
+        public ProductsController(pet_storeContext context, ProductsService service)
         {
             _context = context;
+            _service = service;
         }
 
         // GET: Products
@@ -29,6 +31,10 @@ namespace pet_store.Controllers
 
             return View(await _context.Product.ToListAsync());
 
+        public async Task<IActionResult> Search(string searchString, string productCategory)
+        {
+            var products = _service.Search(searchString, productCategory).Include(x=>x.Category);
+            return Json(await products.ToListAsync());
         }
 
         // GET: Products/Details/5

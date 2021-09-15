@@ -9,6 +9,12 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<div>
+    <input name="searchString" id="inpSearch" />
+    <select class="form-control" name="productCategory" id="inpCategory" asp-items="@new SelectList(Model.Select(x=>x.Category.Name).Distinct())"></select>
+    <button class="btnSearch btn btn-primary">Search</button>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -28,26 +34,54 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Company)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)$
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)$
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<script type="text/template" id="template">
+    <tr>
+        <td>
+            ${name}
+        </td>
+        <td>
+            ${company}
+        </td>
+        <td>
+            ${price}
+        </td>
+        <td>
+            ${categoryId}
+        </td>
+        <td>
+            <a href="/Products/Edit/${id}">Edit</a> |
+            <a href="/Products/Details/${id}">Details</a> |
+            <a href="/Products/Delete/${id}">Delete</a>
+        </td>
+    </tr>
+</script>
+
+@section Scripts
+{
+    <script src="~/js/search.js"></script>
+}

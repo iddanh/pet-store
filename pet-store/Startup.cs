@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using pet_store.Services;
 
 namespace pet_store
 {
@@ -35,6 +36,8 @@ namespace pet_store
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
             });
+
+            services.AddTransient<ProductsService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>
