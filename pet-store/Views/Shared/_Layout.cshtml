@@ -5,47 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Chewy</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/open-iconic/font/css/open-iconic-bootstrap.css">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Chewy</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img width="155" src="~/img/chewy-logo-white.png" /></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         @if (Context != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Admin)))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users Index</a>
+                                <a class="nav-link text-white font-weight-bold" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products Index</a>
+                            <a class="nav-link text-white font-weight-bold" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories Index</a>
+                            <a class="nav-link text-white font-weight-bold" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
                         </li>
                     </ul>
+                    <form class="form-inline">
+                        <div class="input-group mr-4">
+                            <input class="form-control border-0" type="search" placeholder="Search" aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-light bg-white" type="button"><span class="oi oi-magnifying-glass"></span></button>
+                            </div>
+                        </div>
+                    </form>
                     @{
                         if (Context != null && Context.User.Identity.IsAuthenticated)
                         {
-                            <div>Hello <a asp-controller="Users" asp-action="Details" asp-route-id="@Context.User.Claims.First().Value">@Context.User.Identity.Name</a>,&nbsp;</div>
-                            <a asp-controller="Users" asp-action="Logout">Logout</a>
+                            <div class="mr-2">Hello <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Details" asp-route-id="@Context.User.Claims.First().Value">@Context.User.Identity.Name</a></div>
+                            <a class="text-white " asp-controller="Users" asp-action="Logout" title="Logout"><span class="oi oi-account-logout"></span></a>
                         }
                         else
                         {
-                            <a asp-controller="Users" asp-action="Login">Login</a>
+                            <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Login" title="Login"><span class="oi oi-account-login"></span></a>
                         }
                     }
                 </div>
