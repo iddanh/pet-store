@@ -30,7 +30,7 @@ namespace pet_store
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<pet_storeContext>(options =>
+            services.AddDbContext<PetStoreDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("pet_storeContext")));
 
             services.AddSession(options =>
