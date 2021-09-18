@@ -15,9 +15,9 @@ namespace pet_store.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly pet_storeContext _context;
+        private readonly PetStoreDBContext _context;
 
-        public ProductsController(pet_storeContext context)
+        public ProductsController(PetStoreDBContext context)
         {
             _context = context;
         }

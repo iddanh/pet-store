@@ -9,7 +9,7 @@ using pet_store.Data;
 
 namespace pet_store.Migrations
 {
-    [DbContext(typeof(pet_storeContext))]
+    [DbContext(typeof(PetStoreDBContext))]
     [Migration("20210909160148_6")]
     partial class _6
     {

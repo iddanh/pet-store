@@ -7,9 +7,9 @@ using pet_store.Models;
 
 namespace pet_store.Data
 {
-    public class pet_storeContext : DbContext
+    public class PetStoreDBContext : DbContext
     {
-        public pet_storeContext (DbContextOptions<pet_storeContext> options)
+        public PetStoreDBContext (DbContextOptions<PetStoreDBContext> options)
             : base(options)
         {
         }

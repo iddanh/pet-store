@@ -8,7 +8,7 @@ using pet_store.Data;
 
 namespace pet_store.Migrations
 {
-    [DbContext(typeof(pet_storeContext))]
+    [DbContext(typeof(PetStoreDBContext))]
     [Migration("20210904152955_init")]
     partial class init
     {
