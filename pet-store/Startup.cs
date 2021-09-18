@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using pet_store.Services;
+using System.Text.Json.Serialization;
 
 namespace pet_store
 {

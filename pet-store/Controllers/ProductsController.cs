@@ -30,10 +30,12 @@ namespace pet_store.Controllers
             var product = await _context.Category.ToListAsync();
 
             return View(await _context.Product.ToListAsync());
-
-        public async Task<IActionResult> Search(string searchString, string productCategory)
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(string searchString, string productCategory, string productCompany)
         {
-            var products = _service.Search(searchString, productCategory).Include(x=>x.Category);
+            var products = _service.Search(searchString, productCategory, productCompany).Include(x=>x.Category);
             return Json(await products.ToListAsync());
         }
 

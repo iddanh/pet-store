@@ -10,11 +10,18 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<div>
-    <input name="searchString" id="inpSearch" />
-    <select class="form-control" name="productCategory" id="inpCategory" asp-items="@new SelectList(Model.Select(x=>x.Category.Name).Distinct())"></select>
-    <button class="btnSearch btn btn-primary">Search</button>
-</div>
+<form asp-action="Search">
+    <input class="form-control col-sm-6 m-1" name="searchString" id="inpSearch" placeholder="Search a product..."/>
+    <div class="row">
+        <select class="form-control col-sm-2 m-1" name="productCategory" id="inpCategory" asp-items="@new SelectList(Model.Select(x=>x.Category.Name).Distinct())">
+            <option value="">By category...</option>
+        </select>
+        <select class="form-control col-sm-2 m-1" name="productCompany" id="inpCompany" asp-items="@new SelectList(Model.Select(x=>x.Company).Distinct())">
+            <option value="">By company...</option>
+        </select>
+    </div>
+    <button class="btnSearch btn btn-primary" type="button">Search</button>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -71,7 +78,7 @@
             ${price}
         </td>
         <td>
-            ${categoryId}
+            ${category.name}
         </td>
         <td>
             <a href="/Products/Edit/${id}">Edit</a> |
