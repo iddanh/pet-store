@@ -9,7 +9,7 @@ using pet_store.Data;
 
 namespace pet_store.Migrations
 {
-    [DbContext(typeof(PetStoreContext))]
+    [DbContext(typeof(PetStoreDBContext))]
     [Migration("20210917100849_InitialCreate")]
     partial class InitialCreate
     {
