@@ -1,6 +1,8 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -63,6 +65,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .footer {
@@ -79,4 +82,59 @@ nav.navbar {
 
     nav.navbar .container {
         color: #fff;
+    }
+
+
+.product-wrapper .image-wrapper {
+    border: 1px solid #cccccc;
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+}
+
+.product-wrapper .product-title h2 {
+    display: inline;
+}
+
+.price {
+    color: #b32605;
+    font-weight: bold;
+}
+
+.product-wrapper .price {
+    color: #b32605;
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.products-index-wrapper {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    color: black;
+}
+
+    .products-index-wrapper:hover {
+        color: black;
+        text-decoration: none;
+        box-shadow: rgba(0,0,0,0.1) 0 0 20px;
+    }
+
+    .products-index-wrapper .name {
+        flex-grow: 1;
+    }
+
+    .products-index-wrapper .image-wrapper {
+        height: 200px;
+    }
+
+        .products-index-wrapper .image-wrapper img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+    .products-index-wrapper .price {
     }

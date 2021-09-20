@@ -75,7 +75,8 @@ namespace pet_store.Controllers
                 user.RegisterTime = DateTime.Now;
                 _context.Add(user);
                 await _context.SaveChangesAsync();
-                loginUser(user);
+                await LoginUser(user);
+                return RedirectToAction(nameof(Details), new { id = user.Id });
             }
             return View(user);
         }
@@ -100,7 +101,7 @@ namespace pet_store.Controllers
             _context.Update(user);
 
             await _context.SaveChangesAsync();
-            loginUser(user);
+            await LoginUser(user);
             return RedirectToAction(nameof(Details), new { id = id });
         }
 
@@ -111,7 +112,7 @@ namespace pet_store.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        private async void loginUser(User user)
+        private async Task LoginUser(User user)
         {
             // HttpContext.Session.SetString("username", username);
 
@@ -119,7 +120,7 @@ namespace pet_store.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Name, user.FullName),
                     new Claim(ClaimTypes.Role, user.Type.ToString()),
                 };
 
@@ -158,7 +159,7 @@ namespace pet_store.Controllers
 
                 if (q.Count() > 0)
                 {
-                    loginUser(q.First());
+                    LoginUser(q.First());
                     return RedirectToAction("Index", "Products");
                 }
                 else
