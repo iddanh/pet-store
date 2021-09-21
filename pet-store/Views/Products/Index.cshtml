@@ -62,3 +62,27 @@
     </table>
 
     <script src="~/js/ProductCanvas.js"></script>
+
+<h1>All Products</h1>
+
+@if (Context != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Supplier)))
+{
+    <p>
+        Supplier? <a asp-action="Create">Add a product</a>.
+    </p>
+}
+<div class="row row-cols-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <a class="products-index-wrapper" asp-action="Details" asp-route-id="@item.Id">
+                <div class="text-center image-wrapper">
+                    <img src="@item.Image" />
+                </div>
+                <div class="name mt-2"><b>@Html.DisplayFor(modelItem => item.Company)</b> @Html.DisplayFor(modelItem => item.Name)</div>
+                <div class="price mt-3">@Html.DisplayFor(modelItem => item.Price)$</div>
+            </a>
+        </div>
+    }
+</div>
+
