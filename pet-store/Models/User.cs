@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,8 +33,10 @@ namespace pet_store.Models
 
         public DateTime RegisterTime { get; set; }
 
+        [DisplayName("Company Name")] 
         public string CompanyName { get; set; }
 
+        [DisplayName("Company Id")] 
         public string CompanyId { get; set; }
     }
 }
