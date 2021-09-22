@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pet_store.Data;
 
 namespace pet_store.Migrations
 {
     [DbContext(typeof(PetStoreDBContext))]
-    partial class pet_storeContextModelSnapshot : ModelSnapshot
+    [Migration("20210921182933_initi1")]
+    partial class initi1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
