@@ -23,6 +23,13 @@ namespace pet_store.Controllers
         }
 
         // GET: Products
+        public IActionResult Checkout()
+        {
+            return View();
+
+        }
+
+        // GET: Products
         public async Task<IActionResult> Index()
         {
             var product = await _context.Category.ToListAsync();

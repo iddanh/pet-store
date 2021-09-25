@@ -43,17 +43,35 @@
                             </div>
                         </div>
                     </form>
-                    @{
-                        if (Context != null && Context.User.Identity.IsAuthenticated)
-                        {
-                            <div class="mr-2">Hello <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Details" asp-route-id="@Context.User.Claims.First().Value">@Context.User.Identity.Name</a></div>
-                            <a class="text-white " asp-controller="Users" asp-action="Logout" title="Logout"><span class="oi oi-account-logout"></span></a>
+                    <div class="nav-item">
+                        @{
+                            if (Context != null && Context.User.Identity.IsAuthenticated)
+                            {
+                                <span class="mr-2">Hello <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Details" asp-route-id="@Context.User.Claims.First().Value">@Context.User.Identity.Name</a></span>
+                                <a class="text-white " asp-controller="Users" asp-action="Logout" title="Logout"><span class="oi oi-account-logout"></span></a>
+                            }
+                            else
+                            {
+                                <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Login" title="Login"><span class="oi oi-account-login"></span></a>
+                            }
                         }
-                        else
-                        {
-                            <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Login" title="Login"><span class="oi oi-account-login"></span></a>
-                        }
-                    }
+                    </div>
+                    <div class="nav-item cart-container">
+                        <div class="dropdown">
+                            <button class="cart-btn" type="button" data-toggle="dropdown">
+                                <span class="oi oi-cart"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="d-flex justify-content-between align-items-center mx-4">
+                                    <span><b>Cart Subtotal:</b><span id="cart_total" class="price"></span></span>
+                                    <a class="btn btn-primary" asp-controller="Products" asp-action="Checkout">Proceed to Checkout</a>
+                                </div>
+                                <div id="cart">
+                                    <!-- Cart products here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -75,6 +93,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/cart.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
