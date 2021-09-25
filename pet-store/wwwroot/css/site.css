@@ -90,14 +90,14 @@ nav.navbar {
         margin-left: 15px;
     }
 
-        nav.navbar .cart-container button {
+        nav.navbar .cart-container button.cart-btn {
             background-color: rgba(0,0,0,0.1);
             border: 0;
             color: #fff;
             border-radius: 3px;
         }
 
-            nav.navbar .cart-container button:hover {
+            nav.navbar .cart-container button.cart-btn:hover {
                 background-color: rgba(0,0,0,0.2);
             }
 
@@ -158,11 +158,11 @@ nav.navbar {
 
 #cart {
     padding: 10px;
+    width: 400px;
 }
 
 .cart-item {
     display: flex;
-    width: 400px;
 }
 
     .cart-item:not(:last-child) {
@@ -182,3 +182,14 @@ nav.navbar {
         max-width: 50px;
         max-height: 50px;
     }
+
+    .cart-item button.remove-from-cart {
+        background-color: transparent;
+        border: 0;
+        height: 25px;
+        border-radius: 3px;
+    }
+
+        .cart-item button.remove-from-cart:hover {
+            background-color: rgba(0,0,0,0.2);
+        }

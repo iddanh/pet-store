@@ -2,40 +2,61 @@
     let cart = window.sessionStorage.getItem('cart');
     if (cart) {
         try {
-            cart = JSON.parse(cart);
+            return JSON.parse(cart);
         } catch (e) {
-            cart = [];
+            return [];
         }
-    } else {
-        cart = [];
     }
+    return [];
+}
+
+function setCartContents(cart) {
+    window.sessionStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function addToCart(product) {
     const cart = getCartContents();
 
     cart.push(product);
-    window.sessionStorage.setItem('cart', JSON.stringify(cart));
+    setCartContents(cart);
 
     console.log('Added product to cart', product);
-    $('#add_cart').text('Added').removeClass('btn-primary').addClass('btn-success');
 }
 
 function populateCartDropdown() {
     const cart = getCartContents();
+    $('#cart').empty();
 
-    cart.forEach((product) => {
-        $('#cart').html('');
-        $('#cart').append(`
-            <div class="cart-item">
-                <div class="cart-img-container">
-                    <img src="${product.image}" />
+    let totalPrice = 0;
+    if (cart.length > 0) {
+        cart.forEach((product) => {
+            $('#cart').append(`
+                <a class="cart-item text-decoration-none" href="/Products/Details/${product.id}">
+                    <div class="cart-img-container">
+                        <img src="${product.image}" />
+                    </div>
+                    <div>
+                        <div>${product.name}</div>
+                        <div class="price">${product.price}$</div>
+                    </div>
+                    <button class="float-right remove-from-cart" data-product-id="${product.id}">&times;</button>
                 </div>
-                <div>
-                    <div>${product.name}</div>
-                    <div class="price">${product.price}$</div>
-                </div>
-            </div>
-        `);
+            `);
+            totalPrice += product.price;
+        });
+        $('#cart_total').text(`${Math.round(totalPrice * 100) / 100}$`);
+    } else {
+        $('#cart').append('<div class="text-center">Cart is empty</div');
+    }
+
+    $('.remove-from-cart').click((event) => {
+        event.preventDefault();
+
+        const productId = $(event.target).attr('data-product-id');
+        console.log(productId);
+
+        cart.splice(cart.findIndex(product => product.id === productId), 1);
+        setCartContents(cart);
+        populateCartDropdown();
     });
 }

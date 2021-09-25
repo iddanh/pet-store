@@ -50,6 +50,8 @@
             $('#add_cart').click(() => {
                 addToCart(product);
                 populateCartDropdown();
+
+                $('#add_cart').text('Added').removeClass('btn-primary').addClass('btn-success');
             });
         });
     </script>
