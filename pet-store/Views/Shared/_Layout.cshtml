@@ -43,17 +43,27 @@
                             </div>
                         </div>
                     </form>
-                    @{
-                        if (Context != null && Context.User.Identity.IsAuthenticated)
-                        {
-                            <div class="mr-2">Hello <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Details" asp-route-id="@Context.User.Claims.First().Value">@Context.User.Identity.Name</a></div>
-                            <a class="text-white " asp-controller="Users" asp-action="Logout" title="Logout"><span class="oi oi-account-logout"></span></a>
+                    <div class="nav-item">
+                        @{
+                            if (Context != null && Context.User.Identity.IsAuthenticated)
+                            {
+                                <span class="mr-2">Hello <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Details" asp-route-id="@Context.User.Claims.First().Value">@Context.User.Identity.Name</a></span>
+                                <a class="text-white " asp-controller="Users" asp-action="Logout" title="Logout"><span class="oi oi-account-logout"></span></a>
+                            }
+                            else
+                            {
+                                <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Login" title="Login"><span class="oi oi-account-login"></span></a>
+                            }
                         }
-                        else
-                        {
-                            <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Login" title="Login"><span class="oi oi-account-login"></span></a>
-                        }
-                    }
+                    </div>
+                    <div class="nav-item cart-container">
+                        <div class="dropdown">
+                            <button type="button" data-toggle="dropdown">
+                                <span class="oi oi-cart"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" id="cart">
+                            </div>
+                        </div>
                 </div>
             </div>
         </nav>
@@ -75,6 +85,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/cart.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
