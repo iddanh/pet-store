@@ -16,6 +16,7 @@
                 __RequestVerificationToken: token
             }
         }).done(function (result) {
+            window.HTMLAnchorElement="/Product"
             var tbody = $('tbody');
             var template = $('#template').html();
             tbody.html('');

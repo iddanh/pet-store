@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
@@ -15,10 +16,10 @@ namespace pet_store.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly pet_storeContext _context;
+        private readonly PetStoreDBContext _context;
         private readonly ProductsService _service;
 
-        public ProductsController(pet_storeContext context, ProductsService service)
+        public ProductsController(PetStoreDBContext context, ProductsService service)
         {
             _context = context;
             _service = service;
@@ -28,9 +29,17 @@ namespace pet_store.Controllers
         public async Task<IActionResult> Index()
         {
             var product = await _context.Category.ToListAsync();
-
             return View(await _context.Product.ToListAsync());
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GlobalSearch(string searchString, string productCategory, string productCompany)
+        {
+            var products = _service.Search(searchString, productCategory, productCompany).Include(x => x.Category);
+            return View("Index", await products.ToListAsync());
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Search(string searchString, string productCategory, string productCompany)

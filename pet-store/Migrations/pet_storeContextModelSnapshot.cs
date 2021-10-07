@@ -9,7 +9,7 @@ using pet_store.Data;
 namespace pet_store.Migrations
 {
     [DbContext(typeof(PetStoreDBContext))]
-    partial class pet_storeContextModelSnapshot : ModelSnapshot
+    partial class PetStoreDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

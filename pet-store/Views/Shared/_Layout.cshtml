@@ -32,11 +32,12 @@
                             <a class="nav-link text-white font-weight-bold" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
                         </li>
                     </ul>
-                    <form class="form-inline">
+                    
+                    <form class="form-inline" asp-controller="Products" asp-action="GlobalSearch">
                         <div class="input-group mr-4">
-                            <input class="form-control border-0" type="search" placeholder="Search" aria-label="Search">
+                            <input class="form-control border-0" name="searchString" type="search" placeholder="Search" aria-label="Search">
                             <div class="input-group-append">
-                                <button class="btn btn-light bg-white" type="button"><span class="oi oi-magnifying-glass"></span></button>
+                                <button class="btn btn-light bg-white" type="submit"><span class="oi oi-magnifying-glass" type="button"></span></button>
                             </div>
                         </div>
                     </form>
@@ -73,6 +74,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/search.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

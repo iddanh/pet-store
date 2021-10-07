@@ -10,9 +10,9 @@ namespace pet_store.Services
 {
     public class ProductsService
     {
-        private readonly pet_storeContext _context;
+        private readonly PetStoreDBContext _context;
 
-        public ProductsService(pet_storeContext context)
+        public ProductsService(PetStoreDBContext context)
         {
             _context = context;
         }
@@ -41,9 +41,12 @@ namespace pet_store.Services
                       where product.Company.Contains(productCompany)
                       select product;
             }
-            foreach (Product prod in res)
+            if (res.Any())
             {
-                prod.Category.Products.Clear();
+                foreach (Product prod in res)
+                {
+                    prod.Category.Products.Clear();
+                }
             }
             
             return res;
