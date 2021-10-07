@@ -4,51 +4,57 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)$
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class="col-sm-10">
+    <div class="row">
+        <div class="col">
+            <!-- TODO: categories breadcrumbs  -->
             @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Company)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Company)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Model.Image" class="w-50" />
-        </dd>
-    </dl>
+        </div>
+    </div>
+
+    <div class="row mt-2 product-wrapper">
+        <div class="col-sm image-wrapper">
+            <img src="@Model.Image" />
+        </div>
+        <div class="col-sm">
+            <div class="row">
+                <div class="col product-title"><h2>@Html.DisplayFor(model => model.Name)</h2>&nbsp;<span>By @Html.DisplayFor(model => model.Company)</span></div>
+            </div>
+            <div class="row">
+                <div class="col">Price:&nbsp;<span class="price">@Html.DisplayFor(model => model.Price)$</span></div>
+                <div class="col"><button id="add_cart" class="btn btn-primary btn-lg">Add to cart</button></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">@Html.DisplayFor(model => model.Description)</div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+<div class="mt-2">
+    @if (Context != null && Model.Supplier.ToString() == Context.User.Claims.First().Value)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>@:&nbsp;|&nbsp;
+    }
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(()=> {
+            const product = {
+                id: @Html.DisplayFor(model => model.Id),
+                name: '@Html.DisplayFor(model => model.Name)',
+                price: @Html.DisplayFor(model => model.Price),
+                image: '@Html.DisplayFor(model => model.Image)'
+            };
+            $('#add_cart').click(() => {
+                addToCart(product);
+                populateCartDropdown();
+
+                $('#add_cart').text('Added').removeClass('btn-primary').addClass('btn-success');
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -9,56 +9,23 @@
     <br />
     <br />
     <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
+
 </div>
+
+<div class="video">
+    <div style="text-align:center">
+        <button class="btn btn-sm btn-primary video-class" onclick="playPause()">Play/Pause</button>
+        <button class="btn btn-sm btn-primary video-class" onclick="makeBig()">Big</button>
+        <button class="btn btn-sm btn-primary video-class" onclick="makeSmall()">Small</button>
+        <button class="btn btn-sm btn-primary video-class" onclick="makeNormal()">Normal</button>
+        <br><br>
+        <video id="video" width="420">
+            <source src="~/img/PetStoreVideo.mp4" type="video/mp4">
+            @*<source src="mov_bbb.ogg" type="video/ogg">*@
+            Your browser does not support HTML video.
+        </video>
+    </div>
+</div>
+
+
+<script src="~/js/VideoControlls.js"></script>

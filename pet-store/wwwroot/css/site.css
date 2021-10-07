@@ -1,6 +1,8 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -63,6 +65,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .footer {
@@ -80,3 +83,113 @@ nav.navbar {
     nav.navbar .container {
         color: #fff;
     }
+
+    nav.navbar .cart-container {
+        border-left: 1px solid rgba(255,255,255,0.3);
+        padding: 5px 0 5px 15px;
+        margin-left: 15px;
+    }
+
+        nav.navbar .cart-container button.cart-btn {
+            background-color: rgba(0,0,0,0.1);
+            border: 0;
+            color: #fff;
+            border-radius: 3px;
+        }
+
+            nav.navbar .cart-container button.cart-btn:hover {
+                background-color: rgba(0,0,0,0.2);
+            }
+
+
+.product-wrapper .image-wrapper {
+    border: 1px solid #cccccc;
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+}
+
+.product-wrapper .product-title h2 {
+    display: inline;
+}
+
+.price {
+    color: #b32605;
+    font-weight: bold;
+}
+
+.product-wrapper .price {
+    color: #b32605;
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.products-index-wrapper {
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    color: black;
+}
+
+    .products-index-wrapper:hover {
+        color: black;
+        text-decoration: none;
+        box-shadow: rgba(0,0,0,0.1) 0 0 20px;
+    }
+
+    .products-index-wrapper .name {
+        flex-grow: 1;
+    }
+
+    .products-index-wrapper .image-wrapper {
+        height: 200px;
+    }
+
+        .products-index-wrapper .image-wrapper img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+    .products-index-wrapper .price {
+    }
+
+#cart {
+    padding: 10px;
+    width: 400px;
+}
+
+.cart-item {
+    display: flex;
+}
+
+    .cart-item:not(:last-child) {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item .cart-img-container {
+        width: 50px;
+        margin: 10px;
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    .cart-item img {
+        max-width: 50px;
+        max-height: 50px;
+    }
+
+    .cart-item button.remove-from-cart {
+        background-color: transparent;
+        border: 0;
+        height: 25px;
+        border-radius: 3px;
+    }
+
+        .cart-item button.remove-from-cart:hover {
+            background-color: rgba(0,0,0,0.2);
+        }
