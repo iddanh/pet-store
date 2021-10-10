@@ -34,5 +34,6 @@ namespace pet_store.Models
         public string Company { get; set; }
 
         public string Image { get; set; }
+
     }
 }
