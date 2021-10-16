@@ -45,12 +45,15 @@ function populateCartDropdown() {
             totalPrice += product.price;
         });
         $('#cart_total').text(`${Math.round(totalPrice * 100) / 100}$`);
+        $('#cart-count').text(cart.length);
     } else {
         $('#cart').append('<div class="text-center">Cart is empty</div');
+        $('#cart-count').text('');
     }
 
     $('.remove-from-cart').click((event) => {
         event.preventDefault();
+        event.stopPropagation();
 
         const productId = $(event.target).attr('data-product-id');
         console.log(productId);
