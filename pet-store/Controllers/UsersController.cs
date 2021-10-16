@@ -72,6 +72,14 @@ namespace pet_store.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existing = await _context.User.FirstOrDefaultAsync(m => m.Email == user.Email);
+
+                if (existing != null)
+                {
+                    ViewData["Error"] = "Email already in use.";
+                    return View();
+                }
+
                 user.RegisterTime = DateTime.Now;
                 _context.Add(user);
                 await _context.SaveChangesAsync();
@@ -221,7 +229,7 @@ namespace pet_store.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = user.Id });
             }
             return View(user);
         }
@@ -252,7 +260,7 @@ namespace pet_store.Controllers
         }
         private bool AllowedModifyUser(int id)
         {
-            return id == User.GetLoggedInUserId() || User.IsAdmin();
+            return User.GetIsLoggedIn() && (id == User.GetLoggedInUserId() || User.IsAdmin());
         }
 
         private bool UserExists(int id)

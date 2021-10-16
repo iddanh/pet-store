@@ -9,13 +9,21 @@ namespace pet_store.Services
 {
     public static class SessionUtils
     {
+        public static bool GetIsLoggedIn(this ClaimsPrincipal principal)
+        {
+            return principal.Claims.Any();
+        }
         public static int GetLoggedInUserId(this ClaimsPrincipal principal)
         {
+            if (!SessionUtils.GetIsLoggedIn(principal))
+            {
+                return -1;
+            }
             return int.Parse(principal.Claims.First().Value);
         }
         public static bool IsAdmin(this ClaimsPrincipal principal)
         {
-            return principal.IsInRole(nameof(UserType.Admin));
+            return SessionUtils.GetIsLoggedIn(principal) && principal.IsInRole(nameof(UserType.Admin));
         }
     }
 }
