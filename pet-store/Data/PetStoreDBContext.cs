@@ -21,5 +21,7 @@ namespace pet_store.Data
         public DbSet<pet_store.Models.Product> Product { get; set; }
 
         public DbSet<pet_store.Models.Branches> Branches { get; set; }
+
+        public DbSet<pet_store.Models.Order> Order { get; set; }
     }
 }

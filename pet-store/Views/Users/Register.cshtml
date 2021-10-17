@@ -4,16 +4,14 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Register</h1>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row justify-content-center">
+    <div class="col-8 col-sm-8 col-md-6 col-lg-4 register-container">
+        <h1 class="text-center">Register</h1>
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
+                <input asp-for="FullName" class="form-control" required />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -27,14 +25,18 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Register" class="btn btn-primary w-100" />
             </div>
+            @if (!String.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="text-danger">@ViewBag.Error</div>
+            }
         </form>
+        <hr />
+        <div>
+            Already registered? <a asp-action="Login">Click here</a> to Login.
+        </div>
     </div>
-</div>
-
-<div>
-    Already registered? <a asp-action="Register">Click here</a> to Login.
 </div>
 
 @section Scripts {

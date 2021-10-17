@@ -27,6 +27,7 @@ namespace pet_store.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [DisplayName("Full Name")]
         public string FullName { get; set; }
 
         public UserType Type { get; set; } = UserType.Customer;
