@@ -4,30 +4,72 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Category</h4>
+<div class="container">
+    <h4>@Html.DisplayFor(model => model.Name)</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Products)
-        </dt>
-        <dd class = "col-sm-10">
-            @foreach(Product product in Model.Products)
-            {
-                <span>@product.Name,</span>
-            }
-        </dd>
-    </dl>
+    <div class="row mt-5">
+        <!--Grid column-->
+        <aside class="col-md-4 mb-4">
+            <!-- Section: Sidebar -->
+            <section>
+                <!-- Section: Filters -->
+                <section>
+                    <h5>Filter Products</h5>
+                    <section class="navbar-brand">
+                        @foreach (Product product in Model.Products)
+                        {
+                            <div class="col">
+                                    <input class="name mt-2" type="checkbox" id="brand">
+                                    <label for="brand">@Html.DisplayFor(modelItem => product.Company)</label>
+                            </div>
+                        }
+                    </section>
+                    <!-- Section: Price -->
+                    <section class="range-slider container mb-4 mt-2">
+                        <h6 class="font-weight-bold mb-3">Price</h6>
+                        <span class="font-weight-normal small text-muted ml-2">$0</span>
+                        <span class="output outputOne"></span>
+                        <span class="output outputTwo"></span>
+                        <span class="full-range"></span>
+                        <span class="incl-range"></span>
+                        <input name="rangeOne" value="10" min="0" max="100" step="1" type="range" id="minPrice">
+                        <input name="rangeTwo" value="90" min="0" max="100" step="1" type="range" id="maxPrice">
+                        <span class="font-weight-normal small text-muted ml-2">$100</span>
+                    </section>
+                    <!-- Section: Price -->
+                </section>
+                <!-- Section: Filters -->
+                <button id="btnSearch">Filter</button>
+            </section>
+            <!-- Section: Sidebar -->
+        </aside>
+        <div class="col-md-8 mb-4">
+            <dl class="row">
+                <dd class="col-sm-10">
+                    <div class="row row-cols-4">
+                        @foreach (Product product in Model.Products)
+                        {
+                            <div class="col">
+                                <a class="products-index-wrapper" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
+                                    <div class="text-center image-wrapper">
+                                        <img src="@product.Image" />
+                                    </div>
+                                    <div class="name mt-2"><b>@Html.DisplayFor(modelItem => product.Company)</b> @Html.DisplayFor(modelItem => product.Name)</div>
+                                    <div class="price mt-3">@Html.DisplayFor(modelItem => product.Price)$</div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    <script src="~/js/search.js"></script>
+}

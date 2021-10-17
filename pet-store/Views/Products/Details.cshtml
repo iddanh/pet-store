@@ -6,10 +6,16 @@
 
 <div>
     <div class="row">
-        <div class="col">
-            <!-- TODO: categories breadcrumbs  -->
-            @Html.DisplayFor(model => model.Category.Name)
-        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent">
+                @if (Model.Category.Parent != null)
+                {
+                <li class="breadcrumb-item"><a asp-controller="Categories" asp-action="Details" asp-route-id="@(Model.Category.Parent.Id)">@Html.DisplayFor(model => model.Category.Parent.Name)</a></li>
+                }
+                <li class="breadcrumb-item"><a asp-controller="Categories" asp-action="Details" asp-route-id="@(Model.CategoryId)">@Html.DisplayFor(model => model.Category.Name)</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.Name)</li>
+            </ol>
+        </nav>
     </div>
 
     <div class="row mt-2 product-wrapper">

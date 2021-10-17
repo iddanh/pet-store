@@ -35,7 +35,7 @@
                             <a class="nav-link text-white font-weight-bold" asp-area="" asp-controller="Branches" asp-action="Index">Branches</a>
                         </li>
                     </ul>
-                    
+
                     <form class="form-inline" asp-controller="Products" asp-action="GlobalSearch">
                         <div class="input-group mr-4">
                             <input class="form-control border-0" name="searchString" type="search" placeholder="Search" aria-label="Search">
@@ -75,6 +75,15 @@
                     </div>
                 </div>
             </div>
+            <div class="nav-item forecast" id="inpWeather" name="weather" src="https://www.7timer.info">
+                <div class='day'>
+                    <div class='date'>OCT 15 2021</div>
+                    <div class='icon'></div>
+                    <div class='maxt'>28&deg;</div>
+                    <div class='mint'>19&deg;</div>
+                    <div class='conditions'>Cloudy</div>
+                </div>
+            </div>
         </nav>
     </header>
     <div class="container">
@@ -95,8 +104,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/cart.js"></script>
+    <script src="~/js/weather.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/search.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

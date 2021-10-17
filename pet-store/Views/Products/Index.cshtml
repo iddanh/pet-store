@@ -22,7 +22,9 @@
         Supplier? <a asp-action="Create">Add a product</a>.
     </p>
 }
-<form asp-action="Search">
+
+
+<form id="searchForm" asp-action="Search">
     <input class="form-control col-sm-6 m-1" name="searchString" id="inpSearch" placeholder="Search a product..."/>
     <div class="row">
         <select class="form-control col-sm-2 m-1" name="productCategory" id="inpCategory" asp-items="@new SelectList(Model.Select(x=>x.Category.Name).Distinct())">
@@ -32,8 +34,10 @@
             <option value="">By company...</option>
         </select>
     </div>
-    <button class="btnSearch btn btn-primary" type="button">Search</button>
+    <button class="btnSearch btn btn-primary" id="btnSearch" type="button">Search</button>
 </form>
+
+
 <div class="row row-cols-4">
     @foreach (var item in Model)
     {
@@ -51,25 +55,15 @@
 
 
 <script type="text/template" id="template">
-    <tr>
-        <td>
-            ${name}
-        </td>
-        <td>
-            ${company}
-        </td>
-        <td>
-            ${price}
-        </td>
-        <td>
-            ${category.name}
-        </td>
-        <td>
-            <a href="/Products/Edit/${id}">Edit</a> |
-            <a href="/Products/Details/${id}">Details</a> |
-            <a href="/Products/Delete/${id}">Delete</a>
-        </td>
-    </tr>
+    <div class="col">
+        <a class="products-index-wrapper" href="/Products/Details/${id}">
+        <div class="text-center image-wrapper">
+            <img src="${image}" />
+        </div>
+        <div class="name mt-2"><b>${company}</b> ${name}</div>
+        <div class="price mt-3">${price}$</div>
+        </a>
+    </div>
 </script>
 
 @section Scripts {
