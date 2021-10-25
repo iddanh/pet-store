@@ -4,6 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
+<h1>@Html.DisplayFor(model => model.Name)</h1>
 <div class="row">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
@@ -14,6 +15,21 @@
             <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.Name)</li>
         </ol>
     </nav>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+    @foreach (var item in Model.Products)
+    {
+        <div class="col mb-2">
+            <a class="products-index-wrapper" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">
+                <div class="text-center image-wrapper">
+                    <img src="@item.Image" />
+                </div>
+                <div class="name mt-2"><b>@Html.DisplayFor(modelItem => item.Company)</b> @Html.DisplayFor(modelItem => item.Name)</div>
+                <div class="price mt-3">@Html.DisplayFor(modelItem => item.Price)$</div>
+            </a>
+        </div>
+    }
 </div>
 
 <div class="container">

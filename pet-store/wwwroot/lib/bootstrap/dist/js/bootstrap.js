@@ -908,6 +908,8 @@
       return this.each(function () {
         const data = Button.getOrCreateInstance(this);
 
+        data.shouldAvoidTriggerChange = avoidTriggerChange;
+
         if (config === 'toggle') {
           data[config]();
         }

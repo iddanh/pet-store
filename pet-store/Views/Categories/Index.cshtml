@@ -10,13 +10,15 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<div class="row row-cols-4">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
     @foreach (var item in Model)
     {
-    <div class="col">
+    <div class="col mb-2">
         <a class="products-index-wrapper" asp-action="Details" asp-route-id="@item.Id">
-            <div class="text-center image-wrapper"> </div>
-            <div class="name">@Html.DisplayFor(modelItem => item.Name)</div>
+            <div class="text-center image-wrapper">
+                <img src="@item.Image" />
+            </div>
+            <b class="name text-center">@Html.DisplayFor(modelItem => item.Name)</b>
         </a>
     </div>
     }
