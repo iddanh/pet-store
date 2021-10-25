@@ -1,10 +1,16 @@
 ﻿function search() {
-    var minPrice = $('#minPrice');
-    var maxPrice = $('#maxPrice');
+    var minPrice = $('input[name="rangeOne"]');
+    var maxPrice = $('input[name="rangeTwo"]');
     var inpSearch = $('#inpSearch');
     var inpCategory = $('#inpCategory');
     var inpCompany = $('#inpCompany');
     var token = $('input[name="__RequestVerificationToken"]').val();
+
+    if (maxPrice.val() < minPrice.val()) {
+        var temp = maxPrice;
+        maxPrice = minPrice;
+        minPrice = temp;
+    }
     //var loader = $(this).next();
     $.ajax({
         type: "POST",
@@ -14,6 +20,8 @@
             searchString: inpSearch.val(),
             productCategory: inpCategory.val(),
             productCompany: inpCompany.val(),
+            minPrice: minPrice.val(),
+            maxPrice: maxPrice.val(),
             __RequestVerificationToken: token
         }
     }).done(function (result) {
@@ -40,15 +48,21 @@
 };
 
 $(function () {
-    var searchForm = this.getElementById("searchForm");
-    searchForm.addEventListener("submit", search, "capture");
-    var btnSearch = this.getElementById("btnSearch");
-    btnSearch.addEventListener("click", search, "capture");
+    try {
+        var searchForm = this.getElementById("searchForm");
+        searchForm.addEventListener("submit", search, "capture");
+    } catch (e) { };
+    try {
+        var btnSearch = this.getElementById("btnSearch");
+        btnSearch.addEventListener("click", search, "capture");
+    } catch (e) { };
 });
 $("#searchForm").submit(function (e) {
     e.preventDefault();
 });
 
+/* Filter
+ * -------------------------------------------------- */
 var rangeOne = document.querySelector('input[name="rangeOne"]'),
     rangeTwo = document.querySelector('input[name="rangeTwo"]'),
     outputOne = document.querySelector('.outputOne'),
@@ -80,3 +94,54 @@ document.addEventListener('DOMContentLoaded', function () {
         updateView.call(this);
     });
 });
+
+/*
+function filter() {
+    var minPrice = $('.rangeOne');
+    var maxPrice = $('.rangeTwo');
+    var inpSearch = $('#inpSearch');
+    var inpCategory = $('#inpCategory');
+    var inpCompany = $('#inpCompany');
+    var token = $('input[name="__RequestVerificationToken"]').val();
+
+    if (maxPrice < minPrice) {
+        var temp = maxPrice;
+        maxPrice = minPrice;
+        minPrice = temp;
+    }
+    //var loader = $(this).next();
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/Products/Search",
+        data: {
+            searchString: inpSearch.val(),
+            productCategory: inpCategory.val(),
+            productCompany: inpCompany.val(),
+            minPrice: minPrice.val(),
+            maxPrice: maxPrice.val(),
+            __RequestVerificationToken: token
+        }
+    }).done(function (result) {
+        var tbody = $('.row-cols-4');
+        var template = $('#template').html();
+        tbody.html('');
+        $.each(result, function (key, value) {
+            var temp = template;
+            $.each(value, function (key, value) {
+                temp = temp.replaceAll('${' + key + '}', value);
+                try {
+                    $.each(value, function (subkey, subvalue) {
+                        if (subvalue != null)
+                            temp = temp.replaceAll('${' + key + "." + subkey + '}', subvalue);
+                    });
+                }
+                catch (e) { }
+            });
+
+            tbody.append(temp);
+        });
+        //loader.addClass('d-none');
+    });
+};
+*/

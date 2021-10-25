@@ -39,6 +39,7 @@ namespace pet_store
             });
 
             services.AddTransient<ProductsService>();
+            services.AddTransient<UsersService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>
@@ -63,7 +64,7 @@ namespace pet_store
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            //app.UseDefaultFiles();
             app.UseRouting();
 
             app.UseSession();

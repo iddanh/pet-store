@@ -4,6 +4,18 @@
     ViewData["Title"] = "Details";
 }
 
+<div class="row">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent">
+            @if (Model.Parent != null)
+            {
+                <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@(Model.ParentId)">@Html.DisplayFor(model => model.Parent.Name)</a></li>
+            }
+            <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.Name)</li>
+        </ol>
+    </nav>
+</div>
+
 <div class="container">
     <h4>@Html.DisplayFor(model => model.Name)</h4>
     <hr />
@@ -14,32 +26,46 @@
             <section>
                 <!-- Section: Filters -->
                 <section>
-                    <h5>Filter Products</h5>
-                    <section class="navbar-brand">
-                        @foreach (Product product in Model.Products)
-                        {
-                            <div class="col">
+                    <form id="searchForm" asp-controller="Products" asp-action="search">
+                        <h5>Filter Products</h5>
+                        <input style="visibility:hidden" id="inpCategory" value="@Model.Name">
+                        <!--Brand-->
+                        <section class="navbar-brand">
+                            @foreach (Product product in Model.Products)
+                            {
+                                <div class="col">
                                     <input class="name mt-2" type="checkbox" id="brand">
                                     <label for="brand">@Html.DisplayFor(modelItem => product.Company)</label>
-                            </div>
-                        }
-                    </section>
-                    <!-- Section: Price -->
-                    <section class="range-slider container mb-4 mt-2">
-                        <h6 class="font-weight-bold mb-3">Price</h6>
-                        <span class="font-weight-normal small text-muted ml-2">$0</span>
-                        <span class="output outputOne"></span>
-                        <span class="output outputTwo"></span>
-                        <span class="full-range"></span>
-                        <span class="incl-range"></span>
-                        <input name="rangeOne" value="10" min="0" max="100" step="1" type="range" id="minPrice">
-                        <input name="rangeTwo" value="90" min="0" max="100" step="1" type="range" id="maxPrice">
-                        <span class="font-weight-normal small text-muted ml-2">$100</span>
-                    </section>
-                    <!-- Section: Price -->
+                                </div>
+                            }
+                        </section>
+                        <!-- Section: Price -->
+                        <section class="range-slider container mb-4 mt-2">
+                            <h6 class="font-weight-bold mb-3">Price</h6>
+                            <span class="font-weight-normal small text-muted ml-2">$0</span>
+                            <span class="output outputOne"></span>
+                            <span class="output outputTwo"></span>
+                            <span class="full-range"></span>
+                            <span class="incl-range"></span>
+                            <input name="rangeOne" value="10" min="0" max="100" step="1" type="range">
+                            <input name="rangeTwo" value="90" min="0" max="100" step="1" type="range">
+                            <span class="font-weight-normal small text-muted ml-2">$100</span>
+                        </section>
+                        <!-- Section: Price -->
+                        <!--Category-->
+                        <section>
+                            @foreach (var product in Model.Products.GroupBy(x=>x.Category))
+                            {
+                                <div class="col">
+                                    <input class="name mt-2" type="checkbox" id="category">
+                                    <label for="category">@Html.DisplayFor(modelItem => product.Key.Name)</label>
+                                </div>
+                            }
+                        </section>
+                    </form>
                 </section>
                 <!-- Section: Filters -->
-                <button id="btnSearch">Filter</button>
+                <button id="btnSearch" type="button">Filter</button>
             </section>
             <!-- Section: Sidebar -->
         </aside>
@@ -69,6 +95,18 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script type="text/template" id="template">
+    <div class="col">
+        <a class="products-index-wrapper" href="/Products/Details/${id}">
+            <div class="text-center image-wrapper">
+                <img src="${image}" />
+            </div>
+            <div class="name mt-2"><b>${company}</b> ${name}</div>
+            <div class="price mt-3">${price}$</div>
+        </a>
+    </div>
+</script>
 
 @section Scripts {
     <script src="~/js/search.js"></script>

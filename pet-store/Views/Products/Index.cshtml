@@ -27,10 +27,10 @@
 <form id="searchForm" asp-action="Search">
     <input class="form-control col-sm-6 m-1" name="searchString" id="inpSearch" placeholder="Search a product..."/>
     <div class="row">
-        <select class="form-control col-sm-2 m-1" name="productCategory" id="inpCategory" asp-items="@new SelectList(Model.Select(x=>x.Category.Name).Distinct())">
+        <select class="form-control col-sm-2 m-1" name="productCategory" id="inpCategory" asp-items="@ViewBag.Categories">
             <option value="">By category...</option>
         </select>
-        <select class="form-control col-sm-2 m-1" name="productCompany" id="inpCompany" asp-items="@new SelectList(Model.Select(x=>x.Company).Distinct())">
+        <select class="form-control col-sm-2 m-1" name="productCompany" id="inpCompany" asp-items="@ViewBag.Companies">
             <option value="">By company...</option>
         </select>
     </div>

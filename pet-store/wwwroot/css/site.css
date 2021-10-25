@@ -482,24 +482,40 @@ input[type=range] {
     background-position: center;
 }
 
-.forecast .icon.snow {
+.forecast .icon.snow-day {
     background: url(/lib/bootstrap/bootstrap-icons-1.6.0/snow.svg)
 }
 
-    .forecast .icon.rain {
+    .forecast .icon.rain-day {
+        background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-rain.svg);
+    }
+    
+    .forecast .icon.rain-night {
         background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-rain.svg);
     }
 
-    .forecast .icon.fog {
+    .forecast .icon.fog-day {
         background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-fog.svg);
     }
 
-    .forecast .icon.wind {
+    .forecast .icon.fog-night {
+        background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-fog-fill.svg);
+    }
+
+    .forecast .icon.wind-day {
         background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/wind.svg);
     }
 
-    .forecast .icon.cloudy {
+    .forecast .icon.wind-night {
+        background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/wind.svg);
+    }
+
+    .forecast .icon.cloudy-day {
         background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/clouds.svg);
+    }
+    
+    .forecast .icon.cloudy-night {
+        background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/clouds-fill.svg);
     }
 
     .forecast .icon.pcloudy-day {

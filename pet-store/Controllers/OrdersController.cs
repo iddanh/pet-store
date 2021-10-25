@@ -25,6 +25,12 @@ namespace pet_store.Controllers
             return View(await _context.Order.ToListAsync());
         }
 
+        //POST: Orders/Search
+        public async Task<IActionResult> OrderSearch()
+        {
+            return View();
+        }
+
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
