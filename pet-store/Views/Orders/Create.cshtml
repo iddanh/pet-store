@@ -7,6 +7,10 @@
 <h1>Create</h1>
 
 <h4>Order</h4>
+<div id="cart-content">
+    <!-- TODO render cart content here -->
+</div>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -42,6 +46,7 @@
                 <input asp-for="OrderNotes" class="form-control" />
                 <span asp-validation-for="OrderNotes" class="text-danger"></span>
             </div>
+            <!-- Add hidden input with product ids that are in the cart -->
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

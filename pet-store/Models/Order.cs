@@ -18,6 +18,9 @@ namespace pet_store.Models
         public double Price { get; set; }
 
         [Required]
+        public string ProductIds { get; set; }
+
+        [Required]
         [StringLength(50)]
         public string City { get; set; }
 
