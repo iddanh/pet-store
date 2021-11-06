@@ -195,7 +195,7 @@ namespace pet_store.Controllers
         }
         private bool AllowedModifyProduct(int productId)
         {
-            return productId == User.GetLoggedInUserId() || User.IsAdmin();
+            return User.GetIsLoggedIn() && (productId == User.GetLoggedInUserId() || User.IsAdmin());
         }
 
         private bool ProductExists(int id)

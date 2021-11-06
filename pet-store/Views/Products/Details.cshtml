@@ -31,7 +31,7 @@
     </div>
 </div>
 <div class="mt-2">
-    @if (Context != null && Model.Supplier.ToString() == Context.User.Claims.First().Value)
+    @if (Context != null && Context.User.Identity.IsAuthenticated && Model.Supplier.ToString() == Context.User.Claims.First().Value)
     {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>@:&nbsp;|&nbsp;
     }

@@ -2,32 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using pet_store.Models;
 
-
 namespace pet_store.Controllers
 {
-    public class CategoriesController : Controller
+    public class OrdersController : Controller
     {
         private readonly PetStoreDBContext _context;
 
-        public CategoriesController(PetStoreDBContext context)
+        public OrdersController(PetStoreDBContext context)
         {
             _context = context;
         }
 
-        // GET: Categories
+        // GET: Orders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.ToListAsync());
+            return View(await _context.Order.ToListAsync());
         }
 
-        // GET: Categories/Details/5
+        // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,41 +33,39 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.Include(c => c.Products).FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            var order = await _context.Order
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(order);
         }
 
-        // GET: Categories/Create
-        [Authorize(Roles = nameof(UserType.Admin))]
+        // GET: Orders/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = nameof(UserType.Admin))]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Price,City,Street,Apartment,OrderDate,OrderNotes")] Order order)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
+                _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(order);
         }
 
-        // GET: Categories/Edit/5
-        [Authorize(Roles = nameof(UserType.Admin))]
+        // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
+            var order = await _context.Order.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(order);
         }
 
-        // POST: Categories/Edit/5
+        // POST: Orders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = nameof(UserType.Admin))]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,City,Street,Apartment,OrderDate,OrderNotes")] Order order)
         {
-            if (id != category.Id)
+            if (id != order.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace pet_store.Controllers
             {
                 try
                 {
-                    _context.Update(category);
+                    _context.Update(order);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!OrderExists(order.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace pet_store.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(order);
         }
 
-        // GET: Categories/Delete/5
-        [Authorize(Roles = nameof(UserType.Admin))]
+        // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var order = await _context.Order
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(order);
         }
 
-        // POST: Categories/Delete/5
+        // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Category.FindAsync(id);
-            _context.Category.Remove(category);
+            var order = await _context.Order.FindAsync(id);
+            _context.Order.Remove(order);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool OrderExists(int id)
         {
-            return _context.Category.Any(e => e.Id == id);
+            return _context.Order.Any(e => e.Id == id);
         }
     }
 }
