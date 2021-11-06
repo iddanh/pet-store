@@ -131,6 +131,10 @@ nav.navbar {
     display: inline;
 }
 
+.product-wrapper .product-description{
+    overflow-wrap: anywhere;
+}
+
 .price {
     color: #b32605;
     font-weight: bold;
