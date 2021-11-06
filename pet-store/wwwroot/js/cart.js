@@ -58,7 +58,7 @@ function populateCartDropdown() {
         const productId = $(event.target).attr('data-product-id');
         console.log(productId);
 
-        cart.splice(cart.findIndex(product => product.id === productId), 1);
+        cart.splice(cart.findIndex(product => product.id == productId), 1);
         setCartContents(cart);
         populateCartDropdown();
     });
