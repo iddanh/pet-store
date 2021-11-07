@@ -83,6 +83,7 @@ namespace pet_store.Controllers
                 user.RegisterTime = DateTime.Now;
                 _context.Add(user);
                 await _context.SaveChangesAsync();
+
                 await LoginUser(user);
                 return RedirectToAction(nameof(Details), new { id = user.Id });
             }

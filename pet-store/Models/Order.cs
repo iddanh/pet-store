@@ -18,7 +18,7 @@ namespace pet_store.Models
         public double Price { get; set; }
 
         [Required]
-        public string ProductIds { get; set; }
+        public List<Product> Products { get; set; }
 
         [Required]
         [StringLength(50)]
