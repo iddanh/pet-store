@@ -14,6 +14,8 @@ namespace pet_store.Models
         [Required]
         public int Id { get; set; }
 
+        public List<Order> Order { get; set; }
+
         [ForeignKey(nameof(User))]
         [Required]
         public int Supplier { get; set; }

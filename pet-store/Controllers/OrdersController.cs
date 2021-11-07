@@ -46,6 +46,7 @@ namespace pet_store.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
+            ViewBag.now = DateTime.Today;
             return View();
         }
 
@@ -54,10 +55,11 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,City,Street,Apartment,OrderDate,OrderNotes")] Order order)
+        public async Task<IActionResult> Create([Bind("Id,Price,City,Street,Apartment,OrderNotes")] Order order)
         {
             if (ModelState.IsValid)
             {
+                order.OrderDate = DateTime.Now;
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
