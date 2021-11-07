@@ -25,7 +25,7 @@
 
 
 <form id="searchForm" asp-action="Search">
-    <input class="form-control col-sm-6 m-1" name="searchString" id="inpSearch" placeholder="Search a product..."/>
+    <input class="form-control col-sm-6 m-1" name="searchString" id="inpSearch" placeholder="Search a product..." />
     <div class="row">
         <select class="form-control col-sm-2 m-1" name="productCategory" id="inpCategory" asp-items="@ViewBag.Categories">
             <option value="">By category...</option>
@@ -38,7 +38,7 @@
 </form>
 
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" id="prodList">
     @foreach (var item in Model)
     {
         <div class="col mb-2">
@@ -53,15 +53,21 @@
     }
 </div>
 
+@if (Context != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Admin)))
+{
+    <p>
+        <a asp-action="Seed">Seed Products</a>
+    </p>
+}
 
 <script type="text/template" id="template">
     <div class="col">
         <a class="products-index-wrapper" href="/Products/Details/${id}">
-        <div class="text-center image-wrapper">
-            <img src="${image}" />
-        </div>
-        <div class="name mt-2"><b>${company}</b> ${name}</div>
-        <div class="price mt-3">${price}$</div>
+            <div class="text-center image-wrapper">
+                <img src="${image}" />
+            </div>
+            <div class="name mt-2"><b>${company}</b> ${name}</div>
+            <div class="price mt-3">${price}$</div>
         </a>
     </div>
 </script>

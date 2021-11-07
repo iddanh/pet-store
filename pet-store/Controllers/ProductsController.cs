@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +20,13 @@ namespace pet_store.Controllers
     {
         private readonly PetStoreDBContext _context;
         private readonly ProductsService _service;
+        private readonly SeedService _seed;
 
-        public ProductsController(PetStoreDBContext context, ProductsService service)
+        public ProductsController(PetStoreDBContext context, ProductsService service, SeedService seed)
         {
             _context = context;
             _service = service;
+            _seed = seed;
         }
 
         // GET: Products
@@ -38,6 +42,8 @@ namespace pet_store.Controllers
             ViewBag.Categories = new SelectList(_context.Category, "Name", "Name");
             ViewBag.Companies = new SelectList(_context.Product, nameof(Product.Company), nameof(Product.Company));
             var product = _context.Product.Include(p=>p.Category);
+            //await DeleteAll();
+            //await _seed.GooProSearch();
             return View(await product.ToListAsync());
         }
 
@@ -223,5 +229,52 @@ namespace pet_store.Controllers
         {
             return _context.Product.Any(e => e.Id == id);
         }
+
+        [HttpPost]
+        [Authorize(Roles = nameof(UserType.Admin))]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAll()
+        {
+
+            foreach (var product in _context.Product)
+            {
+                if (product.Id > 5)
+                {
+                    _context.Product.Remove(product);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles =nameof(UserType.Admin))]
+        public async Task<IActionResult> Seed()
+        {
+            foreach(var product in _context.Product)
+            {
+                if(product.Name.Contains(product.Company))
+                {
+                    //product.Name = new StringBuilder().AppendJoin(' ',product.Name.Split().Except(product.Company.Split())).ToString();
+                    //product.Company = new StringBuilder().AppendJoin(' ',product.Name.Split().Take(3)).ToString();
+                    _context.Update(product);
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            /*
+            if (_context.Product.Count() < 4)
+            {
+                //await _seed.GooProSearch();
+            }
+            */
+            return RedirectToAction(nameof(Index));
+        }
+        
+        public async Task<IActionResult>GetBreadCrumbs(int categoryId)
+        {
+            var breadCrumbs =_service.GetBreadCrumbs(await _context.Category.FindAsync(categoryId));
+            return Json(breadCrumbs);
+        }
     }
+
 }

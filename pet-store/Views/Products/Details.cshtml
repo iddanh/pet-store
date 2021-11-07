@@ -8,12 +8,8 @@
     <div class="row">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent">
-                @if (Model.Category.Parent != null)
-                {
-                <li class="breadcrumb-item"><a asp-controller="Categories" asp-action="Details" asp-route-id="@(Model.Category.ParentId)">@Html.DisplayFor(model => model.Category.Parent.Name)</a></li>
-                }
-                <li class="breadcrumb-item"><a asp-controller="Categories" asp-action="Details" asp-route-id="@(Model.CategoryId)">@Html.DisplayFor(model => model.Category.Name)</a></li>
-                <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.Name)</li>
+                <li class="breadcrumb-item active" aria-current="page" id="current">@Html.DisplayFor(model => model.Name)</li>
+                <li style="visibility:hidden" id="category" value="@Model.CategoryId"></li>
             </ol>
         </nav>
     </div>
@@ -37,12 +33,16 @@
     </div>
 </div>
 <div class="mt-2">
-    @if (Context != null && Context.User.Identity.IsAuthenticated && Model.Supplier.ToString() == Context.User.Claims.First().Value)
+    @if (Context != null && Context.User.Identity.IsAuthenticated && Model.Supplier.ToString() == Context.User.Claims.First().Value || Context.User.IsInRole(nameof(UserType.Admin)))
     {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>@:&nbsp;|&nbsp;
     }
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script type="text/template" id="breadcrumbs">
+    <li class="breadcrumb-item"><a href="/Categories/Details/${id}">${name}</a></li>
+</script>
 
 @section Scripts {
     <script type="text/javascript">
@@ -61,6 +61,6 @@
             });
         });
     </script>
-
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/breadcrumbs.js"></script>
 }

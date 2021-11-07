@@ -25,7 +25,7 @@
             __RequestVerificationToken: token
         }
     }).done(function (result) {
-        var tbody = $('.row-cols-4');
+        var tbody = $('#prodList');
         var template = $('#template').html();
         tbody.html('');
         $.each(result, function (key, value) {
@@ -40,7 +40,6 @@
                 }
                 catch (e) { }
             });
-
             tbody.append(temp);
         });
         //loader.addClass('d-none');

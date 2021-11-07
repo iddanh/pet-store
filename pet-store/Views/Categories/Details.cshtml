@@ -8,28 +8,10 @@
 <div class="row">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent">
-            @if (Model.Parent != null)
-            {
-                <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@(Model.ParentId)">@Html.DisplayFor(model => model.Parent.Name)</a></li>
-            }
-            <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.Name)</li>
+            <li class="breadcrumb-item active" aria-current="page" id="current">@Html.DisplayFor(model => model.Name)</li>
+            <li style="visibility:hidden" id="category" value="@Model.ParentId"></li>
         </ol>
     </nav>
-</div>
-
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-    @foreach (var item in Model.Products)
-    {
-        <div class="col mb-2">
-            <a class="products-index-wrapper" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">
-                <div class="text-center image-wrapper">
-                    <img src="@item.Image" />
-                </div>
-                <div class="name mt-2"><b>@Html.DisplayFor(modelItem => item.Company)</b> @Html.DisplayFor(modelItem => item.Name)</div>
-                <div class="price mt-3">@Html.DisplayFor(modelItem => item.Price)$</div>
-            </a>
-        </div>
-    }
 </div>
 
 <div class="container">
@@ -63,9 +45,9 @@
                             <span class="output outputTwo"></span>
                             <span class="full-range"></span>
                             <span class="incl-range"></span>
-                            <input name="rangeOne" value="10" min="0" max="100" step="1" type="range">
-                            <input name="rangeTwo" value="90" min="0" max="100" step="1" type="range">
-                            <span class="font-weight-normal small text-muted ml-2">$100</span>
+                            <input name="rangeOne" value="10" min="0" max="@Model.Products.Select(p=>p.Price).Max()" step="1" type="range">
+                            <input name="rangeTwo" value="90" min="0" max="@Model.Products.Select(p=>p.Price).Max()" step="1" type="range">
+                            <span class="font-weight-normal small text-muted ml-2">$@Model.Products.Select(p => p.Price).Max()</span>
                         </section>
                         <!-- Section: Price -->
                         <!--Category-->
@@ -88,16 +70,16 @@
         <div class="col-md-8 mb-4">
             <dl class="row">
                 <dd class="col-sm-10">
-                    <div class="row row-cols-4">
-                        @foreach (Product product in Model.Products)
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" id="prodList">
+                        @foreach (var item in Model.Products)
                         {
-                            <div class="col">
-                                <a class="products-index-wrapper" asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
+                            <div class="col mb-2">
+                                <a class="products-index-wrapper" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">
                                     <div class="text-center image-wrapper">
-                                        <img src="@product.Image" />
+                                        <img src="@item.Image" />
                                     </div>
-                                    <div class="name mt-2"><b>@Html.DisplayFor(modelItem => product.Company)</b> @Html.DisplayFor(modelItem => product.Name)</div>
-                                    <div class="price mt-3">@Html.DisplayFor(modelItem => product.Price)$</div>
+                                    <div class="name mt-2"><b>@Html.DisplayFor(modelItem => item.Company)</b> @Html.DisplayFor(modelItem => item.Name)</div>
+                                    <div class="price mt-3">@Html.DisplayFor(modelItem => item.Price)$</div>
                                 </a>
                             </div>
                         }
@@ -113,7 +95,7 @@
 </div>
 
 <script type="text/template" id="template">
-    <div class="col">
+    <div class="col mb-2">
         <a class="products-index-wrapper" href="/Products/Details/${id}">
             <div class="text-center image-wrapper">
                 <img src="${image}" />
@@ -124,6 +106,11 @@
     </div>
 </script>
 
+<script type="text/template" id="breadcrumbs">
+    <li class="breadcrumb-item"><a href="/Categories/Details/${id}">${name}</a></li>
+</script>
+
 @section Scripts {
     <script src="~/js/search.js"></script>
+    <script src="~/js/breadcrumbs.js"></script>
 }

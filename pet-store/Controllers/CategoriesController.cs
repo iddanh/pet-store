@@ -40,7 +40,25 @@ namespace pet_store.Controllers
             {
                 return NotFound();
             }
-
+            //var newList = category.Products.AsEnumerable();
+            IEnumerable<Product> newList = new List<Product>();
+            foreach(var cat in _context.Category.Include(c=>c.Products).Include(c=>c.Parent))
+            {
+                var originalList = cat.Products.AsEnumerable();
+                if (cat.ParentId == id)
+                {
+                    newList = newList.Concat(originalList);
+                }
+            }
+            if (newList.Any())
+            {
+                return View(new Category { Id = category.Id,
+                    Image = category.Image,
+                    Name = category.Name,
+                    Parent = category.Parent,
+                    Products = newList.ToList(),
+                    ParentId = category.ParentId });
+            }
             return View(category);
         }
 

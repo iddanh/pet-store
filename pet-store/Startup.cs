@@ -40,6 +40,7 @@ namespace pet_store
 
             services.AddTransient<ProductsService>();
             services.AddTransient<UsersService>();
+            services.AddTransient<SeedService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>

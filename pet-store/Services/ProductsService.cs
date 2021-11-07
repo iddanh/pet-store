@@ -58,5 +58,18 @@ namespace pet_store.Services
             
             return res;
         }
+
+        public IEnumerable<Category> GetBreadCrumbs(Category category)
+        {
+            var breadCrumbs = new List<Category>();
+            var parent = category;
+            while(parent!=null)
+            {
+                breadCrumbs.Add(parent);
+                parent = _context.Category.Find(parent.ParentId);
+            }
+            breadCrumbs.Reverse();
+            return breadCrumbs;
+        }
     }
 }
