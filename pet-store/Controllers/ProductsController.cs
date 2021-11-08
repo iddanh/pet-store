@@ -41,7 +41,7 @@ namespace pet_store.Controllers
         {
             ViewBag.Categories = new SelectList(_context.Category, "Name", "Name");
             ViewBag.Companies = new SelectList(_context.Product, nameof(Product.Company), nameof(Product.Company));
-            var product = _context.Product.Include(p=>p.Category);
+            var product = _context.Product.Include(p => p.Category);
             //await DeleteAll();
             //await _seed.GooProSearch();
             return View(await product.ToListAsync());
@@ -61,7 +61,7 @@ namespace pet_store.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Search(string searchString, string productCategory, string productCompany, double minPrice, double maxPrice)
         {
-            var products = _service.Search(searchString, productCategory, productCompany, minPrice, maxPrice).Include(x=>x.Category);
+            var products = _service.Search(searchString, productCategory, productCompany, minPrice, maxPrice).Include(x => x.Category);
             return Json(await products.ToListAsync());
         }
 
@@ -139,6 +139,8 @@ namespace pet_store.Controllers
                 return Forbid();
             }
             ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
+            var suppliers =await _context.User.Where(u=>u.Type.Equals(UserType.Supplier)).ToListAsync();
+            ViewBag.Suppliers =new SelectList(suppliers, "Id", "FullName");
 
             return View(product);
         }
@@ -247,12 +249,12 @@ namespace pet_store.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles =nameof(UserType.Admin))]
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Seed()
         {
-            foreach(var product in _context.Product)
+            foreach (var product in _context.Product)
             {
-                if(product.Name.Contains(product.Company))
+                if (product.Name.Contains(product.Company))
                 {
                     //product.Name = new StringBuilder().AppendJoin(' ',product.Name.Split().Except(product.Company.Split())).ToString();
                     //product.Company = new StringBuilder().AppendJoin(' ',product.Name.Split().Take(3)).ToString();
@@ -269,10 +271,10 @@ namespace pet_store.Controllers
             */
             return RedirectToAction(nameof(Index));
         }
-        
-        public async Task<IActionResult>GetBreadCrumbs(int categoryId)
+
+        public async Task<IActionResult> GetBreadCrumbs(int categoryId)
         {
-            var breadCrumbs =_service.GetBreadCrumbs(await _context.Category.FindAsync(categoryId));
+            var breadCrumbs = _service.GetBreadCrumbs(await _context.Category.FindAsync(categoryId));
             return Json(breadCrumbs);
         }
     }
