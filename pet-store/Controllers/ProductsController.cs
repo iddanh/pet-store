@@ -41,10 +41,15 @@ namespace pet_store.Controllers
         {
             ViewBag.Categories = new SelectList(_context.Category, "Name", "Name");
             ViewBag.Companies = new SelectList(_context.Product, nameof(Product.Company), nameof(Product.Company));
-            var product = _context.Product.Include(p => p.Category);
+            var product = _context.Product.Include(p => p.Category).OrderBy(p => p.CategoryId);
             //await DeleteAll();
             //await _seed.GooProSearch();
             return View(await product.ToListAsync());
+        }
+
+        public async Task<IActionResult> Sort(Comparer<Product> comparer, IEnumerable<Product> products)
+        {
+            products.OrderBy
         }
 
         [HttpPost]
