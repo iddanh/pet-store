@@ -52,7 +52,7 @@ namespace pet_store.Controllers
         public JsonResult GetUsersOrderStatistics()
         {
             var query_res = from order in _context.Order
-                            group order by order.User.Id into g
+                            group order by order.User into g
                             select new
                             {
                                 UserName = (from user in _context.User

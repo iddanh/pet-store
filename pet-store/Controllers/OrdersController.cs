@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using pet_store.Models;
+using pet_store.Services;
 
 namespace pet_store.Controllers
 {
@@ -23,6 +24,11 @@ namespace pet_store.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Order.ToListAsync());
+        }
+
+        public async Task<IActionResult> ClearCart()
+        {
+            return View();
         }
 
         // GET: Orders/Details/5
@@ -55,14 +61,21 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,City,Street,Apartment,OrderNotes")] Order order)
+        public async Task<IActionResult> Create([Bind("Id,Price,City,Street,Apartment,OrderNotes")] Order order, String productIds)
         {
             if (ModelState.IsValid)
             {
                 order.OrderDate = DateTime.Now;
+                order.User = User.GetLoggedInUserId();
+
+                List<int> productIdsParsed = productIds.Split(',').Select(id => int.Parse(id)).ToList();
+                List<Product> products = new List<Product>();
+                productIdsParsed.ForEach(id => products.Add(_context.Product.Find(id)));
+                order.Products = products;
+
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ClearCart));
             }
             return View(order);
         }
