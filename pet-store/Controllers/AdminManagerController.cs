@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using pet_store.Data;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace pet_store.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public JsonResult GetProductsCategorySizes()
         {
 
@@ -45,27 +48,47 @@ namespace pet_store.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetUsersStatistics()
+        [Authorize(Roles = "Admin")]
+        public JsonResult GetUsersOrderStatistics()
         {
-            var query_res = from order in _context.Product
-                            group order by order.CategoryId into g
+            var query_res = from order in _context.Order
+                            group order by order.User.Id into g
                             select new
                             {
-                                Category = g.Key,
-                                Size = g.Count()
+                                UserName = (from user in _context.User
+                                           where user.Id == g.Key
+                                           select user.FullName).FirstOrDefault(),
+                                OrderCount = g.Count()
                             };
+            Dictionary<string, int> res = new Dictionary<string, int>();
+            foreach (var item in query_res)
+            {
+                res.Add(item.UserName, item.OrderCount);
+            }
+
+            return Json(res);
+
+        }
 
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public JsonResult GetLastestRegisteredUsersInfo()
+        {
+            var query_res = (from user in _context.User                           
+                             orderby user.RegisterTime descending
+                            select new
+                            {
+                                UserName = user.FullName ?? user.Id.ToString(),
+                                RegisterTime = user.RegisterTime.ToString()
+                            }).Take(5);
+            Dictionary<string, string> res = new Dictionary<string, string>();
+            foreach (var item in query_res)
+            {
+                res.Add(item.UserName, item.RegisterTime);
+            }
 
-            //from user in _context.User
-
-            List<Models.User> users = _context.User.ToList();
-            Dictionary<string, object> stats = new Dictionary<string, object>();
-            stats.Add("usersCount", users.Count);
-            stats.Add("usersCount2", users.Count);
-
-
-            return Json(stats);
+            return Json(res);
 
         }
     }
