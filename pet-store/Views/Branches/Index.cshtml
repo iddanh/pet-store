@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<pet_store.Models.Branches>
+@using Newtonsoft.Json;
 
 @{
     ViewData["Title"] = "Index";
@@ -28,26 +29,76 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apartment)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apartment)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+
+<div class="container" style="margin:25px 0;">
+    <div id='printoutPanel'></div>
+    <div id='myMap' style='width: 1000px; height: 500px;'></div>
+    <script type='text/javascript'>
+            function loadMapScenario() {
+                var navigationBarMode = Microsoft.Maps.NavigationBarMode;
+                var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+                    navigationBarMode: navigationBarMode.square,
+                    supportedMapTypes: [Microsoft.Maps.MapTypeId.road, Microsoft.Maps.MapTypeId.aerial],
+                    center: new Microsoft.Maps.Location(31.969875, 34.772766),
+                    mapTypeId: Microsoft.Maps.MapTypeId.road,
+                    zoom: 8,
+                    credentials: "AoBO06W-vwZS4NkweHy5F2MTzIRgl7yag1J-lXuR8p_2Vid_otpTKhv55Q7Z6bsd",
+                    showSearchBar: false,
+                    disableScrollWheelZoom: false
+                });
+
+                var array = @Html.Raw(JsonConvert.SerializeObject(ViewBag.addresses));
+
+               for(var i = 0; i < array.length; i++) {
+                    searchInMap(array[i]);
+                }
+
+                function searchInMap(item) {
+                    Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
+                        var searchManager = new Microsoft.Maps.Search.SearchManager(map);
+                        var requestOptions = {
+                            bounds: map.getBounds(),
+                            where: item,
+                            callback: function (answer, userData) {
+                                var pushpin = new Microsoft.Maps.Pushpin(
+                                    answer.results[0].location,
+                                    { title: item });
+                                map.entities.push(pushpin);
+                            }
+                        };
+                        //Search in map
+                        searchManager.geocode(requestOptions);
+                    });
+                }
+            };
+    </script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoBO06W-vwZS4NkweHy5F2MTzIRgl7yag1J-lXuR8p_2Vid_otpTKhv55Q7Z6bsd&callback=loadMapScenario' async defer></script>
+
+</div>
+</div>
