@@ -54,36 +54,46 @@
 </table>
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Use the map to find a store near you</title>
-    <style>
-        #map {
-            height: 400px;
-            width: 100%;
-        }
-    </style>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <script src="./index.js"></script>
-</head>
-<body>
-    <div id="map"></div>
 
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script>
-        let map;
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 32.0853, lng: 34.7818 },
-                zoom: 8,
-            });
-        }
+<div class="container" style="margin:25px 0;">
+    <div id='printoutPanel'></div>
+    <div id='myMap' style='width: 1000px; height: 500px;'></div>
+    <script type='text/javascript'>
+            function loadMapScenario() {
+                var navigationBarMode = Microsoft.Maps.NavigationBarMode;
+                var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+                    navigationBarMode: navigationBarMode.square,
+                    supportedMapTypes: [Microsoft.Maps.MapTypeId.road, Microsoft.Maps.MapTypeId.aerial],
+                    center: new Microsoft.Maps.Location(31.969875, 34.772766),
+                    mapTypeId: Microsoft.Maps.MapTypeId.road,
+                    zoom: 10,
+                    credentials: "AoBO06W-vwZS4NkweHy5F2MTzIRgl7yag1J-lXuR8p_2Vid_otpTKhv55Q7Z6bsd",
+                    showSearchBar: false,
+                    disableScrollWheelZoom: false
+                });
+                for(var i = 0; i < array.length; i++) {
+                    searchInMap(array[i]);
+                }
+                function searchInMap(item) {
+                    Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
+                        var searchManager = new Microsoft.Maps.Search.SearchManager(map);
+                        var requestOptions = {
+                            bounds: map.getBounds(),
+                            where: item,
+                            callback: function (answer, userData) {
+                                var pushpin = new Microsoft.Maps.Pushpin(
+                                    answer.results[0].location,
+                                    { title: item });
+                                map.entities.push(pushpin);
+                            }
+                        };
+                        //Search in map
+                        searchManager.geocode(requestOptions);
+                    });
+                }
+            };
     </script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoBO06W-vwZS4NkweHy5F2MTzIRgl7yag1J-lXuR8p_2Vid_otpTKhv55Q7Z6bsd&callback=loadMapScenario' async defer></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0lsleh9hrTie9Jdeo8AOtssIUMkXRV_A&callback=initMap&v=weekly"
-            async></script>
-</body>
-</html>
+</div>
+</div>
