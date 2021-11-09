@@ -64,11 +64,14 @@ html {
 
 body {
     /* Margin bottom by footer height */
+    background-image: url('/img/background2.png');
+    background-position: center;
     margin-bottom: 60px;
     font-family: 'Roboto', sans-serif;
 }
 
 .footer {
+    background:white;
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -80,9 +83,13 @@ nav.navbar {
     background-color: #128ced;
 }
 
-    nav.navbar .container {
-        color: #fff;
-    }
+#main-page{
+    background-color:white;
+}
+
+nav.navbar .container {
+    color: #fff;
+}
 
     nav.navbar .cart-container {
         border-left: 1px solid rgba(255,255,255,0.3);
@@ -129,6 +136,10 @@ nav.navbar {
 
 .product-wrapper .product-title h2 {
     display: inline;
+}
+
+.product-wrapper .product-description{
+    overflow-wrap: anywhere;
 }
 
 .price {
@@ -229,6 +240,7 @@ nav.navbar {
 
 .login-container,
 .register-container {
+    background:white;
     box-shadow: rgba(0,0,0,0.1) 0 0 30px;
     padding: 30px;
     margin-top: 100px;

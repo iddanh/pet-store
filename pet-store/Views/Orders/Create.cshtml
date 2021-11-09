@@ -7,6 +7,9 @@
 <h1>Create</h1>
 
 <h4>Order</h4>
+<div id="cart-content">
+</div>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,7 +17,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" readonly id="priceinput" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,15 +36,11 @@
                 <span asp-validation-for="Apartment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OrderDate" class="control-label"></label>
-                <input asp-for="OrderDate" class="form-control" />
-                <span asp-validation-for="OrderDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="OrderNotes" class="control-label"></label>
                 <input asp-for="OrderNotes" class="form-control" />
                 <span asp-validation-for="OrderNotes" class="text-danger"></span>
             </div>
+            <input type="hidden" asp-for="Products" id="productinput"/>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -54,5 +53,14 @@
 </div>
 
 @section Scripts {
+    <script type="text/javascript">
+        $(() => {
+            populateCheckoutPage();
+        });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+
+
 }
