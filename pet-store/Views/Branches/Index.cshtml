@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<pet_store.Models.Branches>
+@using Newtonsoft.Json;
 
 @{
     ViewData["Title"] = "Index";
@@ -66,14 +67,18 @@
                     supportedMapTypes: [Microsoft.Maps.MapTypeId.road, Microsoft.Maps.MapTypeId.aerial],
                     center: new Microsoft.Maps.Location(31.969875, 34.772766),
                     mapTypeId: Microsoft.Maps.MapTypeId.road,
-                    zoom: 10,
+                    zoom: 8,
                     credentials: "AoBO06W-vwZS4NkweHy5F2MTzIRgl7yag1J-lXuR8p_2Vid_otpTKhv55Q7Z6bsd",
                     showSearchBar: false,
                     disableScrollWheelZoom: false
                 });
-                for(var i = 0; i < array.length; i++) {
+
+                var array = @Html.Raw(JsonConvert.SerializeObject(ViewBag.addresses));
+
+               for(var i = 0; i < array.length; i++) {
                     searchInMap(array[i]);
                 }
+
                 function searchInMap(item) {
                     Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
                         var searchManager = new Microsoft.Maps.Search.SearchManager(map);
