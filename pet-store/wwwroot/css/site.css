@@ -84,11 +84,11 @@ nav.navbar {
 }
 
 #main-page{
-    background-color:white;
+    background-color: transparent;
 }
 
 nav.navbar .container {
-    color: #fff;
+    background-color: transparent;
 }
 
     nav.navbar .cart-container {
