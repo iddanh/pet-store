@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,7 +18,6 @@ namespace pet_store.Models
         [Display(Name = "Total Price")]
         public double Price { get; set; }
 
-        [Required]
         public List<Product> Products { get; set; }
 
         [Required]
@@ -32,7 +32,8 @@ namespace pet_store.Models
         [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "Positive number required")]
         public int Apartment { get; set; }
 
-        public User User { get; set; }
+        [ForeignKey(nameof(User))]
+        public int User { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Order Date")]

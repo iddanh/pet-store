@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using pet_store.Models;
+using Newtonsoft.Json;
+
 
 namespace pet_store.Controllers
 {
@@ -24,6 +26,8 @@ namespace pet_store.Controllers
         // GET: Branches
         public async Task<IActionResult> Index()
         {
+            JsonConvert.SerializeObject(ViewBag.addresses);
+            ViewData["addresses"] = GetFullAddress();
             return View(await _context.Branches.ToListAsync());
         }
 
@@ -156,6 +160,21 @@ namespace pet_store.Controllers
         private bool BranchesExists(int id)
         {
             return _context.Branches.Any(e => e.Id == id);
+        }
+
+        private List<String> GetFullAddress()
+        {
+            var branch = _context.Branches;
+            List<String> addresses = new List<string> { };
+            if (branch != null)
+            {
+                foreach (var item in branch)
+                {
+                    var address = item.City + " " + item.Street + " " + item.Apartment;
+                    addresses.Add(address);
+                }
+            }
+            return addresses;
         }
     }
 }

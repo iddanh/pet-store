@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "AdminManager";
+}
+<style>
+
+    .bar {
+        fill: steelblue;
+    }
+
+    .highlight {
+        fill: orange;
+    }
+
+    .graph {
+        min-width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        border-radius: 5px;
+    }
+
+    .statsBox {
+        width: 33%;
+        float: left;
+    }
+
+</style>
+<div class="text-center">
+    <h1 class="display-4">Admin Manager</h1>
+    <br />
+    <br />
+    <br />
+</div>
+<div class="graph">
+    <div class="statsBox">
+        <h3>Corrent orders:</h3>
+        <div class="graph" id="UserStatistics"></div>
+    </div>
+
+    <div class="statsBox">
+        <h3>Products' categories:</h3>
+        <div id="ProductCategoriesStats"></div>
+    </div>
+    <div class="statsBox">
+        <h3>Latest 5 Users:</h3>
+        <div id="LatestUsers"></div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="~/js/createChart.js"></script>
+
+    <script type="text/javascript">
+        $(() => {
+            setInterval(loadDataFromServer(), 10000);
+        });
+
+        function loadDataFromServer() {
+            $.ajax({
+                type: "Get",
+                url: '@Url.Action("GetUsersOrderStatistics")',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    createD3BarChart(data, 'UserStatistics')
+                }
+            })
+            $.ajax({
+                type: "Get",
+                url: '@Url.Action("GetProductsCategorySizes")',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    createD3BarChart(data, 'ProductCategoriesStats')
+                }
+            })
+            $.ajax({
+                type: "Get",    
+                url: '@Url.Action("GetLastestRegisteredUsersInfo")',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#LatestUsers").empty();
+
+                    for (const [key, value] of Object.entries(data).reverse()) {
+                        $("#LatestUsers").append("<div>" + key + ": " + value + "</div>")
+                    }
+                }
+            })
+
+
+
+        }
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
