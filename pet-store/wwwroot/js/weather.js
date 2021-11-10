@@ -1,4 +1,3 @@
-
 $(function () {
     $('.forecast').ready(async function () {
         const mint = document.querySelector(".mint");

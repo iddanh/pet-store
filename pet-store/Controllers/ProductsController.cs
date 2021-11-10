@@ -144,8 +144,8 @@ namespace pet_store.Controllers
                 return Forbid();
             }
             ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
-            var suppliers =await _context.User.Where(u=>u.Type.Equals(UserType.Supplier)).ToListAsync();
-            ViewBag.Suppliers =new SelectList(suppliers, "Id", "FullName");
+            var suppliers = await _context.User.Where(u=>u.Type.Equals(UserType.Supplier)).ToListAsync();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "FullName");
 
             return View(product);
         }
