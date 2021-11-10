@@ -47,9 +47,9 @@ namespace pet_store.Controllers
             return View(await product.ToListAsync());
         }
 
-        public async Task<IActionResult> Sort(Comparer<Product> comparer, IEnumerable<Product> products)
+        public IActionResult Sort(Comparer<Product> comparer, IEnumerable<Product> products)
         {
-            products.OrderBy
+            return View(nameof(Index),products.OrderBy(p=>p, comparer));
         }
 
         [HttpPost]

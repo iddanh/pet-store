@@ -70,17 +70,17 @@ var rangeOne = document.querySelector('input[name="rangeOne"]'),
     updateView = function () {
         if (this.getAttribute('name') === 'rangeOne') {
             outputOne.innerHTML = this.value + "$";
-            outputOne.style.left = this.value / this.getAttribute('max') * 100 + '%';
+            outputOne.style.left = this.value / Number.parseInt(this.getAttribute('max')) * 100 + '%';
         } else {
-            outputTwo.style.left = this.value / this.getAttribute('max') * 100 + '%';
+            outputTwo.style.left = this.value / Number.parseInt(this.getAttribute('max')) * 100 + '%';
             outputTwo.innerHTML = this.value + "$";
         }
         if (parseInt(rangeOne.value) > parseInt(rangeTwo.value)) {
-            inclRange.style.width = (rangeOne.value - rangeTwo.value) / this.getAttribute('max') * 100 + '%';
-            inclRange.style.left = rangeTwo.value / this.getAttribute('max') * 100 + '%';
+            inclRange.style.width = (rangeOne.value - rangeTwo.value) / Number.parseInt(this.getAttribute('max')) * 100 + '%';
+            inclRange.style.left = rangeTwo.value / Number.parseInt(this.getAttribute('max')) * 100 + '%';
         } else {
-            inclRange.style.width = (rangeTwo.value - rangeOne.value) / this.getAttribute('max') * 100 + '%';
-            inclRange.style.left = rangeOne.value / this.getAttribute('max') * 100 + '%';
+            inclRange.style.width = (rangeTwo.value - rangeOne.value) / Number.parseInt(this.getAttribute('max')) * 100 + '%';
+            inclRange.style.left = rangeOne.value / Number.parseInt(this.getAttribute('max')) * 100 + '%';
         }
     };
 
