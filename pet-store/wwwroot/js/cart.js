@@ -62,15 +62,17 @@ function populateCartDropdown() {
         setCartContents(cart);
         populateCartDropdown();
     });
-
-
 }
 
+function clearCart(event) {
+    setCartContents([]);
+    populateCartDropdown();
+}
 
 function populateCheckoutPage() {
     const cart = getCartContents();
     $('#cart-content').empty();
-    let productinput = [];
+    let productsList = [];
     let totalPrice = 0;
     if (cart.length > 0) {
         cart.forEach((product) => {
@@ -88,14 +90,14 @@ function populateCheckoutPage() {
             `);
 
             totalPrice += product.price;
-            productinput.push(product.id);
+            productsList.push(product.id);
         });
         $('#priceinput').val(Math.round(totalPrice * 100) / 100);
-        $('#productinput').val(productinput.join(','));
+        $('#productsinput').val(productsList.join(','));
     } else {
         $('#cart-content').append('<div class="text-center">Cart is empty</div');
         $('#priceinput').val(0);
-        $('#productinput').val('');
+        $('#productsinput').val('');
 
     }
 

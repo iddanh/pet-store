@@ -41,10 +41,15 @@ namespace pet_store.Controllers
         {
             ViewBag.Categories = new SelectList(_context.Category, "Name", "Name");
             ViewBag.Companies = new SelectList(_context.Product, nameof(Product.Company), nameof(Product.Company));
-            var product = _context.Product.Include(p => p.Category);
+            var product = _context.Product.Include(p => p.Category).OrderBy(p => p.CategoryId);
             //await DeleteAll();
             //await _seed.GooProSearch();
             return View(await product.ToListAsync());
+        }
+
+        public IActionResult Sort(Comparer<Product> comparer, IEnumerable<Product> products)
+        {
+            return View(nameof(Index),products.OrderBy(p=>p, comparer));
         }
 
         [HttpPost]
@@ -139,8 +144,8 @@ namespace pet_store.Controllers
                 return Forbid();
             }
             ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
-            var suppliers =await _context.User.Where(u=>u.Type.Equals(UserType.Supplier)).ToListAsync();
-            ViewBag.Suppliers =new SelectList(suppliers, "Id", "FullName");
+            var suppliers = await _context.User.Where(u=>u.Type.Equals(UserType.Supplier)).ToListAsync();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "FullName");
 
             return View(product);
         }

@@ -40,7 +40,7 @@ namespace pet_store.Controllers
             {
                 return NotFound();
             }
-            //var newList = category.Products.AsEnumerable();
+
             IEnumerable<Product> newList = new List<Product>();
             foreach(var cat in _context.Category.Include(c=>c.Products).Include(c=>c.Parent))
             {
