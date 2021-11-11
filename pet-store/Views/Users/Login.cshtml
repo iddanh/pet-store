@@ -5,7 +5,7 @@
 }
 
 <style>
-    #main-page{
+    #main-page {
         background-color: transparent;
         box-shadow: unset;
     }
@@ -26,6 +26,7 @@
                 <input asp-for="Password" class="form-control" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+            <input type="hidden" name="ReturnUrl" id="return-url-input" />
             <div class="form-group">
                 <input type="submit" value="Login" class="btn btn-primary w-100" />
             </div>
@@ -34,7 +35,7 @@
                 <div class="text-danger">@ViewBag.Error</div>
             }
         </form>
-        <hr/>
+        <hr />
         <div>
             Not registered? <a asp-action="Register">Click here</a> to register.
         </div>
@@ -43,5 +44,13 @@
 
 
 @section Scripts {
+    <script>
+        $(() => {
+            const urlSearchParams = new URLSearchParams(window.location.search);
+            const params = Object.fromEntries(urlSearchParams.entries());
+            $('#return-url-input').val(params.ReturnUrl);
+        });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,16 @@ namespace pet_store.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Order.ToListAsync());
+            List<Order> orders;
+            if (User.IsAdmin())
+            {
+                orders = await _context.Order.ToListAsync();
+            }
+            else
+            {
+                orders = await _context.Order.Where(order => order.User == User.GetLoggedInUserId()).ToListAsync();
+            }
+            return View(orders);
         }
 
         public async Task<IActionResult> ClearCart()
@@ -39,17 +49,21 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var order = await _context.Order.Include(c => c.Products).FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
                 return NotFound();
+            }
+            if (!AllowedModifyOrder(order.User))
+            {
+                return Forbid();
             }
 
             return View(order);
         }
 
         // GET: Orders/Create
+        [Authorize(Roles = nameof(UserType.Customer))]
         public IActionResult Create()
         {
             ViewBag.now = DateTime.Today;
@@ -93,6 +107,10 @@ namespace pet_store.Controllers
             {
                 return NotFound();
             }
+            if (!AllowedModifyOrder(order.User))
+            {
+                return Forbid();
+            }
             return View(order);
         }
 
@@ -106,6 +124,11 @@ namespace pet_store.Controllers
             if (id != order.Id)
             {
                 return NotFound();
+            }
+
+            if (!AllowedModifyOrder(order.User))
+            {
+                return Forbid();
             }
 
             if (ModelState.IsValid)
@@ -146,6 +169,11 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
+            if (!AllowedModifyOrder(order.User))
+            {
+                return Forbid();
+            }
+
             return View(order);
         }
 
@@ -155,6 +183,12 @@ namespace pet_store.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var order = await _context.Order.FindAsync(id);
+
+            if (!AllowedModifyOrder(order.User))
+            {
+                return Forbid();
+            }
+
             _context.Order.Remove(order);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -163,6 +197,11 @@ namespace pet_store.Controllers
         private bool OrderExists(int id)
         {
             return _context.Order.Any(e => e.Id == id);
+        }
+
+        private bool AllowedModifyOrder(int userId)
+        {
+            return User.GetIsLoggedIn() && (userId == User.GetLoggedInUserId() || User.IsAdmin());
         }
     }
 }
