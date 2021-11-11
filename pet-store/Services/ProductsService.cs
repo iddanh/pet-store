@@ -4,7 +4,6 @@ using pet_store.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace pet_store.Services
 {
