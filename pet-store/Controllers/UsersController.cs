@@ -118,7 +118,7 @@ namespace pet_store.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction(nameof(Login));
+            return RedirectToAction("Index", "Home");
         }
 
         private async Task LoginUser(User user)
@@ -157,7 +157,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login([Bind("Email,Password")] User user)
+        public IActionResult Login([Bind("Email,Password")] User user, string ReturnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -169,6 +169,10 @@ namespace pet_store.Controllers
                 if (q.Count() > 0)
                 {
                     LoginUser(q.First());
+                    if (ReturnUrl != null)
+                    {
+                        return Redirect(ReturnUrl);
+                    }
                     return RedirectToAction("Index", "Products");
                 }
                 else
