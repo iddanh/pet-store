@@ -75,8 +75,18 @@
                     </div>
                 </div>
             </div>
+            <div class="nav-item forecast">
+                <div class='day'>
+                    <div class='date'></div>
+                    <div class='icon'></div>
+                    <div class='maxt'></div>
+                    <div class='mint'></div>
+                    <div class='conditions'></div>
+                </div>
+            </div>
         </nav>
     </header>
+
     <div class="container" id="main-page">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -96,6 +106,9 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/cart.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/weather.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
