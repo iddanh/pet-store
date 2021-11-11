@@ -19,7 +19,22 @@ namespace pet_store.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("pet_store.Models.Branches", b =>
+            modelBuilder.Entity("OrderProduct", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("OrderProduct");
+                });
+
+            modelBuilder.Entity("pet_store.Models.Branch", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,9 +59,15 @@ namespace pet_store.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Branch");
                 });
 
             modelBuilder.Entity("pet_store.Models.Category", b =>
@@ -97,10 +118,6 @@ namespace pet_store.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
-
-                    b.Property<string>("ProductIds")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
                         .IsRequired()
@@ -188,6 +205,32 @@ namespace pet_store.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("OrderProduct", b =>
+                {
+                    b.HasOne("pet_store.Models.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("pet_store.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("pet_store.Models.Branch", b =>
+                {
+                    b.HasOne("pet_store.Models.User", "User")
+                        .WithOne("Branch")
+                        .HasForeignKey("pet_store.Models.Branch", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("pet_store.Models.Category", b =>
                 {
                     b.HasOne("pet_store.Models.Category", "Parent")
@@ -220,6 +263,11 @@ namespace pet_store.Migrations
             modelBuilder.Entity("pet_store.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("pet_store.Models.User", b =>
+                {
+                    b.Navigation("Branch");
                 });
 #pragma warning restore 612, 618
         }
