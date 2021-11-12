@@ -4,23 +4,35 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Categories</h1>
+<div class="title">
+    <div style="text-align:center">
+
+        <canvas id="myCanvas" width="400" height="100"
+                style="border:1px solid #FFFFFF;">
+            Your browser does not support the canvas element.
+        </canvas>
+    </div>
+</div>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a href="/Categories/Create" class="btn btn-outline-secondary btn-sm" role="button">Add a Category</a>
 </p>
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
     @foreach (var item in Model)
     {
-    <div class="col mb-2">
-        <a class="products-index-wrapper" asp-action="Details" asp-route-id="@item.Id">
-            <div class="text-center image-wrapper">
-                <img src="@item.Image" />
-            </div>
-            <b class="name text-center">@Html.DisplayFor(modelItem => item.Name)</b>
-        </a>
-    </div>
+        <div class="col mb-2">
+            <a class="products-index-wrapper" asp-action="Details" asp-route-id="@item.Id">
+                <div class="text-center image-wrapper">
+                    <img src="@item.Image" />
+                </div>
+                <b class="name text-center">@Html.DisplayFor(modelItem => item.Name)</b>
+            </a>
+        </div>
     }
 </div>
+
+@section Scripts {
+    <script src="~/js/CategoryCanvas.js"></script>
+}
 

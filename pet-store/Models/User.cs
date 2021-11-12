@@ -11,7 +11,6 @@ namespace pet_store.Models
     {
         Customer,
         Supplier,
-        Manager,
         Admin
     }
 
