@@ -17,10 +17,6 @@ namespace pet_store.Models
 
         public int UserId { get; set; }
 
-        public virtual User User { get; set; }
-
-        public int UserId { get; set; }
-
         [Required(ErrorMessage = "Branch name is required")]
         [StringLength(30, ErrorMessage = "Maximum 30 Characters")]
         public string Name { get; set; }
