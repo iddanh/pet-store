@@ -1,6 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<link rel="stylesheet" href="~/css/site.css">
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0" nonce="NgBmCc7a"></script>
 
 <div class="text-center">
     <h1 class="display-4">Welcome to our pet store!</h1>
@@ -11,9 +16,9 @@
     <br />
 
 </div>
+<div style="text-align:center">
+    <div class="video">
 
-<div class="video">
-    <div style="text-align:center">
         <button class="btn btn-sm btn-primary video-class" onclick="playPause()">Play/Pause</button>
         <button class="btn btn-sm btn-primary video-class" onclick="makeBig()">Big</button>
         <button class="btn btn-sm btn-primary video-class" onclick="makeSmall()">Small</button>
@@ -25,7 +30,9 @@
             Your browser does not support HTML video.
         </video>
     </div>
-</div>
 
+    <div class="fb-page" data-href="https://www.facebook.com/PetStore.Direct/" data-tabs="timeline" data-width="" data-height="" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="true"><blockquote cite="https://www.facebook.com/PetStore.Direct/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/PetStore.Direct/">PetStore.Direct</a></blockquote></div>
+
+</div>
 
 <script src="~/js/VideoControlls.js"></script>
