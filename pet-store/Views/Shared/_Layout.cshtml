@@ -102,7 +102,6 @@
             @if (Context != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Customer)))
             {
                 <span>&nbsp;| &nbsp;</span><a asp-controller="Users" asp-action="RegisterSupplier" asp-route-id="@Context.User.Claims.First().Value">Become a supplier</a>
-                <span>&nbsp;| &nbsp;</span><a asp-controller="Users" asp-action="RegisterManager" asp-route-id="@Context.User.Claims.First().Value">Become a Manager</a>
             }
         </div>
     </footer>

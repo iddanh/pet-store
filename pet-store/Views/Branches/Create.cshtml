@@ -19,7 +19,7 @@
             @if (Context != null && ViewBag.UserIds != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Admin)))
             {
             <div class="form-group">
-               <label asp-for="UserId" class="control-label"></label>
+               <label asp-for="UserId" class="control-label">Select Supplier</label>
                <select asp-for="UserId" class="control-label" asp-items="ViewBag.UserIds"></select>
             </div>            
             }
