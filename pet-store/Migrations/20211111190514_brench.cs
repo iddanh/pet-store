@@ -6,6 +6,9 @@ namespace pet_store.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+/*            migrationBuilder.DropForeignKey(
+                name: "FK_Branches_User_UserId",
+                table: "Branches");*/
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Branches",

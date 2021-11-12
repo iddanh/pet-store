@@ -10,8 +10,8 @@ $(function () {
         const data = response['dataseries'][0];
         var dtime = new Date(Date.now());
         var hours = dtime.getHours();
-        mint.textContent = data['temp2m']['min'];
-        maxt.textContent = data['temp2m']['max'];
+        mint.innerHTML = data['temp2m']['min'] + '&deg;';
+        maxt.innerHTML = data['temp2m']['max'] + '&deg;';
         date.textContent = dtime.toDateString();
         conditions.textContent = data['weather'];
         if (hours < 18 && hours > 6) {

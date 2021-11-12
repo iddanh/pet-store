@@ -11,6 +11,7 @@ namespace pet_store.Models
     {
         Customer,
         Supplier,
+        Manager,
         Admin
     }
 
@@ -33,6 +34,8 @@ namespace pet_store.Models
         public UserType Type { get; set; } = UserType.Customer;
 
         public DateTime RegisterTime { get; set; }
+
+        public virtual Branch Branch { get; set; }
 
         [DisplayName("Company Name")] 
         public string CompanyName { get; set; }
