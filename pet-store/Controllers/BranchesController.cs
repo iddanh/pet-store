@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using pet_store.Models;
 using Newtonsoft.Json;
-
+using pet_store.Services;
 
 namespace pet_store.Controllers
 {
@@ -28,7 +28,7 @@ namespace pet_store.Controllers
         {
             JsonConvert.SerializeObject(ViewBag.addresses);
             ViewData["addresses"] = GetFullAddress();
-            return View(await _context.Branches.ToListAsync());
+            return View(await _context.Branch.ToListAsync());
         }
 
         // GET: Branches/Details/5
@@ -39,7 +39,7 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var branches = await _context.Branches
+            var branches = await _context.Branch
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (branches == null)
             {
@@ -50,9 +50,10 @@ namespace pet_store.Controllers
         }
 
         // GET: Branches/Create
-        [Authorize(Roles = "Admin,Supplier")]
+        [Authorize(Roles = "Admin,Manager")]
         public IActionResult Create()
         {
+            ViewBag.UserIds = new SelectList(_context.User.Where(u => u.Type.Equals(UserType.Manager) && u.Branch == null), "Id", "Name");
             return View();
         }
 
@@ -61,16 +62,20 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Supplier")]
-        public async Task<IActionResult> Create([Bind("Id,Name,City,Street,Apartment")] Branches branches)
+        [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> Create([Bind("Id,Name,City,Street,Apartment,UserId")] Branch branch)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(branches);
+                if (!User.IsInRole(nameof(UserType.Admin)))
+                {
+                    branch.UserId = User.GetLoggedInUserId();
+                }
+                _context.Add(branch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(branches);
+            return View(branch);
         }
 
         // GET: Branches/Edit/5
@@ -82,12 +87,12 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var branches = await _context.Branches.FindAsync(id);
-            if (branches == null)
+            var branch = await _context.Branch.FindAsync(id);
+            if (branch == null)
             {
                 return NotFound();
             }
-            return View(branches);
+            return View(branch);
         }
 
         // POST: Branches/Edit/5
@@ -96,9 +101,9 @@ namespace pet_store.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Supplier")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Street,Apartment")] Branches branches)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Street,Apartment")] Branch branch)
         {
-            if (id != branches.Id)
+            if (id != branch.Id)
             {
                 return NotFound();
             }
@@ -107,12 +112,12 @@ namespace pet_store.Controllers
             {
                 try
                 {
-                    _context.Update(branches);
+                    _context.Update(branch);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BranchesExists(branches.Id))
+                    if (!BranchesExists(branch.Id))
                     {
                         return NotFound();
                     }
@@ -123,7 +128,7 @@ namespace pet_store.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(branches);
+            return View(branch);
         }
 
         // GET: Branches/Delete/5
@@ -135,14 +140,14 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var branches = await _context.Branches
+            var branch = await _context.Branch
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (branches == null)
+            if (branch == null)
             {
                 return NotFound();
             }
 
-            return View(branches);
+            return View(branch);
         }
 
         // POST: Branches/Delete/5
@@ -151,20 +156,20 @@ namespace pet_store.Controllers
         [Authorize(Roles = "Admin,Supplier")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var branches = await _context.Branches.FindAsync(id);
-            _context.Branches.Remove(branches);
+            var branch = await _context.Branch.FindAsync(id);
+            _context.Branch.Remove(branch);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BranchesExists(int id)
         {
-            return _context.Branches.Any(e => e.Id == id);
+            return _context.Branch.Any(e => e.Id == id);
         }
 
         private List<String> GetFullAddress()
         {
-            var branch = _context.Branches;
+            var branch = _context.Branch;
             List<String> addresses = new List<string> { };
             if (branch != null)
             {

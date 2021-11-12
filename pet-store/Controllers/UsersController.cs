@@ -124,6 +124,25 @@ namespace pet_store.Controllers
             return RedirectToAction(nameof(Details), new { id = id });
         }
 
+        public async Task<IActionResult> RegisterManager()
+        {
+            //ViewBag.Branches = new SelectList(await _context.Branch.Where(b => b.User != null).ToListAsync(), "Id", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterManager(int id, [Bind("ManagedBranchId")] User manager)
+        {
+            var user = await _context.User.FirstOrDefaultAsync(m => m.Id == id);
+            user.Type = UserType.Manager;
+            _context.Update(user);
+
+            await _context.SaveChangesAsync();
+            await LoginUser(user);
+            return RedirectToAction(nameof(Details), new { id = id });
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
