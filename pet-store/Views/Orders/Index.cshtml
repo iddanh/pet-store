@@ -12,6 +12,9 @@
         <tr>
             
             <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
@@ -36,6 +39,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @(((List<User>)ViewBag.Users).Find(u => u.Id == item.User)?.FullName)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
