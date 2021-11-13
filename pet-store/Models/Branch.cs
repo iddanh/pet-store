@@ -12,6 +12,10 @@ namespace pet_store.Models
     {
         [Key]
         public int Id { get; set; }
+        [DisplayName("Manager")]
+        public virtual User User { get; set; }
+
+        public int UserId { get; set; }
 
         [DisplayName("Manager")]
         public virtual User User { get; set; }

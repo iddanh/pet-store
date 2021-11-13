@@ -13,9 +13,9 @@ namespace pet_store.Models
         [Required]
         public int Id { get; set; }
 
+
         [Display(Name = "Parent")]
         public int? ParentId { get; set; }
-
         [ForeignKey("ParentId")]
         public Category Parent { get; set; }
 

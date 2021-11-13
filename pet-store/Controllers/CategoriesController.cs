@@ -69,6 +69,7 @@ namespace pet_store.Controllers
         [Authorize(Roles = nameof(UserType.Admin))]
         public IActionResult Create()
         {
+            ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
 
@@ -78,7 +79,7 @@ namespace pet_store.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = nameof(UserType.Admin))]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,ParentId,Image")] Category category)
         {
             if (ModelState.IsValid)
             {

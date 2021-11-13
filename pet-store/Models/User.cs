@@ -41,5 +41,7 @@ namespace pet_store.Models
 
         [DisplayName("Company Id")] 
         public string CompanyId { get; set; }
+
+        public virtual Branch Branch { get; set; }
     }
 }

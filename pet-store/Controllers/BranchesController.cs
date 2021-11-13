@@ -39,14 +39,14 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var branches = await _context.Branch
+            var branch = await _context.Branch
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (branches == null)
+            if (branch == null)
             {
                 return NotFound();
             }
 
-            return View(branches);
+            return View(branch);
         }
 
         // GET: Branches/Create
@@ -64,14 +64,10 @@ namespace pet_store.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Supplier")]
-        public async Task<IActionResult> Create([Bind("Id,Name,City,Street,Apartment,UserId")] Branch branch)
+        public async Task<IActionResult> Create([Bind("Id,Name,City,Street,Apartment")] Branch branch)
         {
             if (ModelState.IsValid)
             {
-                if (!User.IsInRole(nameof(UserType.Admin)))
-                {
-                    branch.UserId = User.GetLoggedInUserId();
-                }
                 _context.Add(branch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
