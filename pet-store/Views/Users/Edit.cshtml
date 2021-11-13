@@ -24,6 +24,20 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+            @if (Model.Type == UserType.Supplier)
+            {
+                <div class="form-group">
+                    <label asp-for="CompanyId" class="control-label"></label>
+                    <input asp-for="CompanyId" class="form-control" />
+                    <span asp-validation-for="CompanyId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CompanyName" class="control-label"></label>
+                    <input asp-for="CompanyName" class="form-control" />
+                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                </div>
+            }
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />

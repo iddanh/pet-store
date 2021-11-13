@@ -223,6 +223,9 @@ namespace pet_store.Controllers
 
             if (ModelState.IsValid)
             {
+                var oldUser = await _context.User.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+                user.Type = oldUser.Type;
+
                 try
                 {
                     _context.Update(user);

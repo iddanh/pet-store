@@ -22,6 +22,7 @@ namespace pet_store.Controllers
         }
 
         // GET: Orders
+        [Authorize(Roles = nameof(UserType.Customer))]
         public async Task<IActionResult> Index()
         {
             List<Order> orders;
