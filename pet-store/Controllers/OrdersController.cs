@@ -102,7 +102,8 @@ namespace pet_store.Controllers
                     _context.Add(order);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(ClearCart));
-                } else
+                }
+                else
                 {
                     ViewData["Error"] = "Cart is empty. Go add some products!";
                 }
@@ -111,6 +112,7 @@ namespace pet_store.Controllers
         }
 
         // GET: Orders/Edit/5
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -135,6 +137,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Price,City,Street,Apartment,OrderDate,OrderNotes")] Order order)
         {
             if (id != order.Id)
@@ -171,6 +174,7 @@ namespace pet_store.Controllers
         }
 
         // GET: Orders/Delete/5
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -196,6 +200,7 @@ namespace pet_store.Controllers
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var order = await _context.Order.FindAsync(id);
@@ -217,7 +222,7 @@ namespace pet_store.Controllers
 
         private bool AllowedModifyOrder(int userId)
         {
-            return User.GetIsLoggedIn() && (userId == User.GetLoggedInUserId() || User.IsAdmin());
+            return User.GetIsLoggedIn() && User.IsAdmin();
         }
     }
 }

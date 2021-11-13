@@ -15,9 +15,10 @@
     </div>
 </div>
 
-<p>
-    <a href="/Branches/Create" class="btn btn-outline-secondary btn-sm" role="button">Add a Branch</a>
-</p>
+@if (Context.User.IsInRole(nameof(UserType.Admin)))
+{
+    <a href="/Branches/Create" class="btn btn-outline-secondary btn-sm mb-3" role="button">Add a Branch</a>
+}
 <table class="table">
     <thead>
         <tr>
@@ -53,9 +54,12 @@
                     @Html.DisplayFor(modelItem => item.Apartment)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (Context.User.IsInRole(nameof(UserType.Admin)) || Context.User.IsInRole(nameof(UserType.Supplier)))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
                 </td>
             </tr>
         }

@@ -14,9 +14,10 @@
     </div>
 </div>
 
-<p>
-    <a href="/Categories/Create" class="btn btn-outline-secondary btn-sm" role="button">Add a Category</a>
-</p>
+@if (Context.User.IsInRole(nameof(UserType.Admin)))
+{
+    <a href="/Categories/Create" class="btn btn-outline-secondary btn-sm mb-3" role="button">Add a Category</a>
+}
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
     @foreach (var item in Model)
