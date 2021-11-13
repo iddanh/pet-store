@@ -24,6 +24,7 @@ namespace pet_store.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
+            ViewBag.Users = new SelectList(_context.User, "Id", "FullName");
             List<Order> orders;
             if (User.IsAdmin())
             {
@@ -48,7 +49,7 @@ namespace pet_store.Controllers
             {
                 return NotFound();
             }
-
+            
             var order = await _context.Order.Include(c => c.Products).FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
