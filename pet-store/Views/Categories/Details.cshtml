@@ -29,12 +29,19 @@
                         <input style="visibility:hidden" id="inpCategory" value="@Model.Name">
                         <!--Brand-->
                         <section class="navbar-brand">
-                            @foreach (Product product in Model.Products)
+                            @foreach (string company in ViewBag.Companies)
                             {
+                                foreach (Product prod in Model.Products)
+                                {
+                                    if (prod.Company.Contains(company))
+                                    {
                                 <div class="col">
-                                    <input class="name mt-2 brand" type="checkbox" data-brandsname="@Html.DisplayFor(modelItem => product.Company)">
-                                    <label for="brand">@Html.DisplayFor(modelItem => product.Company)</label>
+                                    <input class="name mt-2 brand" type="checkbox" data-brandsname="@Html.DisplayFor(modelItem => prod.Company)">
+                                    <label for="brand">@Html.DisplayFor(modelItem => prod.Company)</label>
                                 </div>
+                                        break;
+                                    }
+                                }
                             }
                         </section>
                         <!-- Section: Price -->
@@ -46,6 +53,7 @@
                             <span class="incl-range"></span>
                             <input name="rangeOne" value="@((int)Model.Products.Select(p=>p.Price).Min())" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
                             <input name="rangeTwo" value="@((int)Model.Products.Select(p=>p.Price).Max())" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
+
                         </section>
                         <!-- Section: Price -->
                         <!--Category-->
