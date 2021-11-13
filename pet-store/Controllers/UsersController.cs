@@ -18,10 +18,11 @@ namespace pet_store.Controllers
     public class UsersController : Controller
     {
         private readonly PetStoreDBContext _context;
-
-        public UsersController(PetStoreDBContext context)
+        private readonly UsersService _service;
+        public UsersController(PetStoreDBContext context, UsersService service)
         {
             _context = context;
+            _service = service;
         }
 
         public IActionResult AccessDenied()
@@ -36,6 +37,14 @@ namespace pet_store.Controllers
             return View(await _context.User.ToListAsync());
         }
 
+        //POST: Users/Search
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UserSearch(string email, string name, string company, UserType[] type)
+        {
+            var users = _service.UserSearch(email, name, company, type);
+            return Json(await users.ToListAsync());
+        }
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {

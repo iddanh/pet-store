@@ -36,6 +36,10 @@ namespace pet_store.Controllers
             }
 
             var category = await _context.Category.Include(c => c.Products).Include(c => c.Parent).FirstOrDefaultAsync(m => m.Id == id);
+            var companies = from product in _context.Product
+                            select product.Company;
+
+            ViewBag.Companies = companies.Distinct();
             if (category == null)
             {
                 return NotFound();
