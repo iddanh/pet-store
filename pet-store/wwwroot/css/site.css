@@ -216,7 +216,8 @@ nav.navbar .container {
         max-height: 50px;
     }
 
-    .cart-item button.remove-from-cart {
+    .cart-item button.remove-from-cart,
+    .cart-item button.remove-from-checkout {
         background-color: transparent;
         border: 0;
         height: 25px;
