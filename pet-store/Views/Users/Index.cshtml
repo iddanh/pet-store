@@ -9,6 +9,19 @@
 <p>
     <a asp-action="Register">Create New</a>
 </p>
+<form id="searchForm" asp-action="UserSearch">
+    <input class="form-control col-sm-6 m-1" name="name" placeholder="Search a user..." />
+    <div class="row">
+        <input class="form-control col-sm-2 m-1" name="email" placeholder="By email...">
+        <select class="form-control col-sm-2 m-1" name="company" asp-items="@new SelectList(Model.Select(x=>x.CompanyName).Distinct())">
+            <option value="">By company...</option>
+        </select>
+        <select class="form-control col-sm-2 m-1" name="type" asp-items="@new SelectList(Model.Select(x=>x.Type).Distinct())">
+            <option value="">Customer/Supplier/Admin...</option>
+        </select>
+    </div>
+    <button class="btnSearch btn btn-primary" id="btnSearch" type="button">Search</button>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -22,20 +35,42 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<script type="text/template" id="template">
+    <tr>
+        <td>
+            ${email}
+        </td>
+        <td>
+            ${type}
+        </td>
+        <td>
+            <a href="/Users/Edit/${id}">Edit</a> |
+            <a href="/Users/Details/${id}">Details</a> |
+            <a href="/Users/Delete/${id}">Delete</a>
+
+        </td>
+    </tr>
+</script>
+
+@section Scripts{
+    <script src="~/js/userSearch.js"></script>
+}
