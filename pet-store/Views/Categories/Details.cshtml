@@ -45,8 +45,8 @@
                             <span class="output outputTwo"></span>
                             <span class="full-range"></span>
                             <span class="incl-range"></span>
-                            <input name="rangeOne" value="0" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
-                            <input name="rangeTwo" value="425" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
+                            <input name="rangeOne" value="@((int)Model.Products.Select(p=>p.Price).Min())" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
+                            <input name="rangeTwo" value="@((int)Model.Products.Select(p=>p.Price).Max())" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
                             <span class="font-weight-normal small text-muted ml-2">$@((int)Model.Products.Select(p => p.Price).Max())</span>
                         </section>
                         <!-- Section: Price -->
