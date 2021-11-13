@@ -49,20 +49,20 @@ namespace pet_store.Controllers
         //POST:Search
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GlobalSearch(string searchString, string productCategory, string productCompany)
+        public async Task<IActionResult> GlobalSearch(string searchString, string productCategory, string productCompany, string brands)
         {
             ViewBag.Categories = new SelectList(_context.Category, "Name", "Name");
             ViewBag.Companies = new SelectList(_context.Product, nameof(Product.Company), nameof(Product.Company));
-            var products = _service.Search(searchString, productCategory, productCompany).Include(x => x.Category);
+            var products = _service.Search(searchString, productCategory, productCompany, brands).Include(x => x.Category);
             return View("Index", await products.ToListAsync());
         }
 
         //POST:Search Json
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Search(string searchString, string productCategory, string productCompany, double minPrice, double maxPrice)
+        public async Task<IActionResult> Search(string searchString, string productCategory, string productCompany,  string brands, double minPrice, double maxPrice)
         {
-            var products = _service.Search(searchString, productCategory, productCompany, minPrice, maxPrice).Include(x => x.Category);
+            var products = _service.Search(searchString, productCategory, productCompany, brands, minPrice, maxPrice).Include(x => x.Category);
             return Json(await products.ToListAsync());
         }
 

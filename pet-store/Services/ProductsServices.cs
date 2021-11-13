@@ -16,7 +16,7 @@ namespace pet_store.Services
             _context = context;
         }
 
-        public IQueryable<Product> Search(string searchString, string productCategory, string productCompany, double minPrice = 0, double maxPrice = 0, string brands)
+        public IQueryable<Product> Search(string searchString, string productCategory, string productCompany, string brands, double minPrice = 0, double maxPrice = 0)
         {
             var res = _context.Product.Include(x => x.Category).AsQueryable<Product>();
             if (!String.IsNullOrEmpty(searchString))
