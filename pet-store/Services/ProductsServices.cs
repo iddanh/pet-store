@@ -16,7 +16,7 @@ namespace pet_store.Services
             _context = context;
         }
 
-        public IQueryable<Product> Search(string searchString, string productCategory, string productCompany, double minPrice = 0, double maxPrice = 0)
+        public IQueryable<Product> Search(string searchString, string productCategory, string productCompany, double minPrice = 0, double maxPrice = 0, string brands)
         {
             var res = _context.Product.Include(x => x.Category).AsQueryable<Product>();
             if (!String.IsNullOrEmpty(searchString))
@@ -34,10 +34,16 @@ namespace pet_store.Services
                       where category.Name.Contains(productCategory)
                       select product;
             }
-            if (!String.IsNullOrEmpty(productCompany))
+            if (!String.IsNullOrEmpty(productCompany) && String.IsNullOrEmpty(brands))
             {
                 res = from product in res
                       where product.Company.Contains(productCompany)
+                      select product;
+            }
+            if(!String.IsNullOrEmpty(brands))
+            {
+                res = from product in res
+                      where brands.Contains(product.Company)
                       select product;
             }
             if (minPrice > 0 && minPrice < maxPrice)

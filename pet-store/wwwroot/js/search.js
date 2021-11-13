@@ -5,8 +5,9 @@
     var inpCategory = $('#inpCategory');
     var inpCompany = $('#inpCompany');
     var token = $('input[name="__RequestVerificationToken"]').val();
-    var brands = $('.brand');
-    brands.filter(brand => brand.is(":checked")).map(brand => brand.attr('data-brandsname')).join(', ');
+    let str = '';
+    $.each($('.brand:checked'), (index, brand) => str += `${$(brand).attr('data-brandsname')},`);
+
 
 
     if (maxPrice.val() < minPrice.val()) {
@@ -25,6 +26,7 @@
             productCompany: inpCompany.val(),
             minPrice: minPrice.val(),
             maxPrice: maxPrice.val(),
+            brands: str,
             __RequestVerificationToken: token
         }
     }).done(function (result) {

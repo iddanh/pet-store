@@ -24,7 +24,21 @@ namespace pet_store.Services
                       where city.Equals(order.City)
                       select order;
             }
-            //if(productsIds.Length>0)
+            
+            //if (productsIds.Length>0)
+            //{
+            //    foreach (var order in res)
+            //    {
+            //        var products = order.Products;
+
+            //        res.Append(from orders in res
+            //                   join prod in products
+            //                   on 
+                          
+            //              where productsIds.Contains(product.Id)
+            //              select order;)
+            //    }
+            //}
             return res;
         }
     }
