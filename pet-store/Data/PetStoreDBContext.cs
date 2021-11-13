@@ -14,6 +14,11 @@ namespace pet_store.Data
         {
         }
 
+        public PetStoreDBContext ()
+            : base()
+        {
+        }
+
         public DbSet<pet_store.Models.User> User { get; set; }
 
         public DbSet<pet_store.Models.Category> Category { get; set; }
