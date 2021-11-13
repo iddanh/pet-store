@@ -14,23 +14,25 @@ function setCartContents(cart) {
     window.localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-function addToCart(product) {
+function addToCart(productId) {
     const cart = getCartContents();
 
-    cart.push(product);
+    cart.push(productId);
     setCartContents(cart);
 
-    console.log('Added product to cart', product);
+    console.log('Added product to cart', productId);
 }
 
 function populateCartDropdown() {
     const cart = getCartContents();
-    $('#cart').empty();
 
-    let totalPrice = 0;
     if (cart.length > 0) {
-        cart.forEach((product) => {
-            $('#cart').append(`
+        $.get(`/api/Cart/${cart.join(',')}`, (data) => {
+            $('#cart').empty();
+
+            let totalPrice = 0;
+            data.forEach((product) => {
+                $('#cart').append(`
                 <a class="cart-item text-decoration-none" href="/Products/Details/${product.id}">
                     <div class="cart-img-container">
                         <img src="${product.image}" />
@@ -42,26 +44,28 @@ function populateCartDropdown() {
                     <button class="float-right remove-from-cart" data-product-id="${product.id}">&times;</button>
                 </div>
             `);
-            totalPrice += product.price;
+                totalPrice += product.price;
+            });
+            $('#cart_total').text(`${Math.round(totalPrice * 100) / 100}$`);
+            $('#cart-count').text(cart.length);
+
+            $('.remove-from-cart').click((event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const productId = $(event.target).attr('data-product-id');
+                console.log(productId);
+
+                cart.splice(cart.findIndex(id => id == productId), 1);
+                setCartContents(cart);
+                populateCartDropdown();
+                populateCheckoutPage();
+            });
         });
-        $('#cart_total').text(`${Math.round(totalPrice * 100) / 100}$`);
-        $('#cart-count').text(cart.length);
     } else {
         $('#cart').append('<div class="text-center">Cart is empty</div');
         $('#cart-count').text('');
     }
-
-    $('.remove-from-cart').click((event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const productId = $(event.target).attr('data-product-id');
-        console.log(productId);
-
-        cart.splice(cart.findIndex(product => product.id == productId), 1);
-        setCartContents(cart);
-        populateCartDropdown();
-    });
 }
 
 function clearCart(event) {
@@ -70,13 +74,18 @@ function clearCart(event) {
 }
 
 function populateCheckoutPage() {
+    if ($('#cart-content').length === 0) {
+        return;
+    }
+
     const cart = getCartContents();
-    $('#cart-content').empty();
-    let productsList = [];
-    let totalPrice = 0;
     if (cart.length > 0) {
-        cart.forEach((product) => {
-            $('#cart-content').append(`
+        $.get(`/api/Cart/${cart.join(',')}`, (data) => {
+            $('#cart-content').empty();
+            let productsList = [];
+            let totalPrice = 0;
+            data.forEach((product) => {
+                $('#cart-content').append(`
                 <a class="cart-item text-decoration-none" href="/Products/Details/${product.id}"> 
                     <div class="cart-img-container">
                         <img src="${product.image}" />
@@ -85,34 +94,34 @@ function populateCheckoutPage() {
                         <div>${product.name}</div>
                         <div class="price">${product.price}$</div>
                     </div>
-                    <button class="float-right remove-from-cart" data-product-id="${product.id}">&times;</button>
+                    <button class="float-right remove-from-checkout" data-product-id="${product.id}">&times;</button>
                 </div>
             `);
 
-            totalPrice += product.price;
-            productsList.push(product.id);
+                totalPrice += product.price;
+                productsList.push(product.id);
+            });
+            $('#priceinput').val(Math.round(totalPrice * 100) / 100);
+            $('#productsinput').val(productsList.join(','));
+
+            $('.remove-from-checkout').click((event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const productId = $(event.target).attr('data-product-id');
+                console.log(productId);
+
+                //there is bug here. it removes the last product each
+                cart.splice(cart.findIndex(id => id == productId), 1);
+                setCartContents(cart);
+                populateCartDropdown();
+                populateCheckoutPage();
+            });
         });
-        $('#priceinput').val(Math.round(totalPrice * 100) / 100);
-        $('#productsinput').val(productsList.join(','));
     } else {
         $('#cart-content').append('<div class="text-center">Cart is empty</div');
         $('#priceinput').val(0);
         $('#productsinput').val('');
 
     }
-
-
-    $('.remove-from-cart').click((event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const productId = $(event.target).attr('data-product-id');
-        console.log(productId);
-
-        //there is bug here. it removes the last product each
-        cart.splice(cart.findIndex(product => product.id == productId), 1);
-        setCartContents(cart);
-        populateCartDropdown();
-        populateCheckoutPage();
-    });
 }
