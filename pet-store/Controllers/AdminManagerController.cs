@@ -112,7 +112,7 @@ namespace pet_store.Controllers
                              orderby user.RegisterTime descending
                              select new
                              {
-                                 UserName = user.FullName ?? user.Id.ToString(),
+                                 UserName = user.Id.ToString() + " - " + user.FullName ?? user.Id.ToString(),
                                  RegisterTime = user.RegisterTime.ToString()
                              }).Take(5);
             Dictionary<string, string> res = new Dictionary<string, string>();
