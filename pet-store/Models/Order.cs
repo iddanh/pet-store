@@ -14,7 +14,7 @@ namespace pet_store.Models
 
         public int Id { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:₪ #,0.##}")]
+        [DisplayFormat(DataFormatString = "{0:$ #,0.##}")]
         [Display(Name = "Total Price")]
         public double Price { get; set; }
 
