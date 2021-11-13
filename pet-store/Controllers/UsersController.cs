@@ -118,7 +118,12 @@ namespace pet_store.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(ClearCart));
+        }
+
+        public async Task<IActionResult> ClearCart()
+        {
+            return View();
         }
 
         private async Task LoginUser(User user)
@@ -218,6 +223,9 @@ namespace pet_store.Controllers
 
             if (ModelState.IsValid)
             {
+                var oldUser = await _context.User.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+                user.Type = oldUser.Type;
+
                 try
                 {
                     _context.Update(user);
