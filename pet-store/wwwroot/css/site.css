@@ -216,7 +216,8 @@ nav.navbar .container {
         max-height: 50px;
     }
 
-    .cart-item button.remove-from-cart {
+    .cart-item button.remove-from-cart,
+    .cart-item button.remove-from-checkout {
         background-color: transparent;
         border: 0;
         height: 25px;
@@ -249,6 +250,25 @@ nav.navbar .container {
     padding: 30px;
     margin-top: 100px;
     border-radius: 3px;
+}
+    .fb-page
+
+{
+}
+
+
+/*weather
+-------------------------------------------------- */
+.forecast {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #ffffff;
+    margin: 10px;
+    border-radius: 7px;
+    line-height: 1px;
+    background-color: #8ff0ff;
 }
 
 .fb-page {    
@@ -553,3 +573,7 @@ input[type=range] {
     .forecast .icon.clear-night {
         background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/moon.svg);
     }
+
+.manager-container{
+    margin-left: 5px;
+}

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using pet_store.Models;
 using Newtonsoft.Json;
-
+using pet_store.Services;
 
 namespace pet_store.Controllers
 {
@@ -51,8 +51,10 @@ namespace pet_store.Controllers
 
         // GET: Branches/Create
         [Authorize(Roles = "Admin,Supplier")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var userids = await _context.User.Where(u => u.Type.Equals(UserType.Supplier) && u.Branch == null).ToListAsync();
+            ViewData["UserIds"] = new SelectList(userids, "Id", "FullName");
             return View();
         }
 
@@ -62,10 +64,14 @@ namespace pet_store.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Supplier")]
-        public async Task<IActionResult> Create([Bind("Id,Name,City,Street,Apartment")] Branch branch)
+        public async Task<IActionResult> Create([Bind("Id,Name,City,Street,Apartment,UserId")] Branch branch)
         {
             if (ModelState.IsValid)
             {
+                if (!User.IsInRole(nameof(UserType.Admin)))
+                {
+                    branch.UserId = User.GetLoggedInUserId();
+                }
                 _context.Add(branch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

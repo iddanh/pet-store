@@ -34,7 +34,7 @@
     </div>
 </div>
 <div class="mt-2">
-    @if (Context != null && Context.User.Identity.IsAuthenticated && Model.Supplier.ToString() == Context.User.Claims.First().Value || Context.User.IsInRole(nameof(UserType.Admin)))
+    @if (Context != null && Context.User.Identity.IsAuthenticated && (Model.Supplier.ToString() == Context.User.Claims.First().Value || Context.User.IsInRole(nameof(UserType.Admin))))
     {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>@:&nbsp;|&nbsp;
     }
@@ -48,14 +48,8 @@
 @section Scripts {
     <script type="text/javascript">
         $(()=> {
-            const product = {
-                id: @Html.DisplayFor(model => model.Id),
-                name: '@Html.DisplayFor(model => model.Name)',
-                price: @Html.DisplayFor(model => model.Price),
-                image: '@Html.DisplayFor(model => model.Image)'
-            };
             $('#add_cart').click(() => {
-                addToCart(product);
+                addToCart(@Html.DisplayFor(model => model.Id));
                 populateCartDropdown();
 
                 $('#add_cart').text('Added').removeClass('btn-primary').addClass('btn-success');
