@@ -256,23 +256,10 @@ namespace pet_store.Controllers
         [Authorize(Roles = nameof(UserType.Admin))]
         public async Task<IActionResult> Seed()
         {
-            foreach (var product in _context.Product)
-            {
-                if (product.Name.Contains(product.Company))
-                {
-                    //product.Name = new StringBuilder().AppendJoin(' ',product.Name.Split().Except(product.Company.Split())).ToString();
-                    //product.Company = new StringBuilder().AppendJoin(' ',product.Name.Split().Take(3)).ToString();
-                    _context.Update(product);
-                }
-            }
-            await _context.SaveChangesAsync();
-
-            /*
             if (_context.Product.Count() < 4)
             {
-                //await _seed.GooProSearch();
-            }
-            */
+                await _seed.GooProSearch(_seed_api_token);
+            }   
             return RedirectToAction(nameof(Index));
         }
 

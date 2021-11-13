@@ -18,6 +18,12 @@ namespace pet_store.Services
 
         public IQueryable<Product> Search(string searchString, string productCategory, string productCompany, string brands, double minPrice = 0, double maxPrice = 0)
         {
+            if(minPrice > maxPrice)
+            {
+                var temp = minPrice;
+                minPrice = maxPrice;
+                maxPrice = minPrice;
+            }
             var res = _context.Product.Include(x => x.Category).AsQueryable<Product>();
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -46,11 +52,11 @@ namespace pet_store.Services
                       where brands.Contains(product.Company)
                       select product;
             }
-            if (minPrice > 0 && minPrice < maxPrice)
+            if (minPrice >= 0 && minPrice < maxPrice)
             {
                 res = from product in res
                       where product.Price >= minPrice &&
-                      product.Price <= maxPrice
+                      product.Price <= maxPrice+1
                       select product;
             }
             if (res.Any())
