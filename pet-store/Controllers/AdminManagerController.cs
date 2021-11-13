@@ -77,14 +77,7 @@ namespace pet_store.Controllers
         public JsonResult GetUsersOrderStatistics()
         {
             var query_res = from order in _context.Order
-                            join user in _context.User
-                            on order.User.Id equals user.Id
-                            select new
-                            {
-                                user,
-                                order
-                            } into user2order
-                            group user2order by user2order.order.User into g
+                            group order by order.User into g
                             select new
                             {
                                 UserName = g.Key.ToString(),
