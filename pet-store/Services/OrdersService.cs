@@ -15,31 +15,26 @@ namespace pet_store.Services
             _context = context;
         }
 
-        public IQueryable<Order> Search(int? fromPrice, int? untilPrice, int[] usersIds, int[] productsIds, string city, DateTime? from, DateTime? until)
-        {
-            var res = _context.Order.AsQueryable();
-            if (!String.IsNullOrEmpty(city))
-            {
-                res = from order in res
-                      where city.Equals(order.City)
-                      select order;
-            }
-            
-            //if (productsIds.Length>0)
-            //{
-            //    foreach (var order in res)
-            //    {
-            //        var products = order.Products;
+        //public IQueryable<Order> Search(int? fromPrice, int? untilPrice, int[] usersIds, int[] productsIds, string city, DateTime? from, DateTime? until)
+        //{
+        //    var res = _context.Order.AsQueryable();
+        //    if (!String.IsNullOrEmpty(city))
+        //    {
+        //        res = from order in res
+        //              where city.Equals(order.City)
+        //              select order;
+        //    }
 
-            //        res.Append(from orders in res
-            //                   join prod in products
-            //                   on 
-                          
-            //              where productsIds.Contains(product.Id)
-            //              select order;)
-            //    }
-            //}
-            return res;
+        //    if (productsIds.Length > 0)
+        //    {
+        //        foreach (var order in res)
+        //        {
+        //            var temp = from prod in order.Products
+        //                       where productsIds.Contains(prod.Id)
+        //                       select order;
+        //            res = res.Concat(temp.AsQueryable());
+        //        }
+        //        return res;
+        //    }
         }
     }
-}

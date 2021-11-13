@@ -40,14 +40,12 @@
                         <!-- Section: Price -->
                         <section class="range-slider container mb-4 mt-2">
                             <h6 class="font-weight-bold mb-3">Price</h6>
-                            <span class="font-weight-normal small text-muted ml-2">$0</span>
                             <span class="output outputOne"></span>
                             <span class="output outputTwo"></span>
                             <span class="full-range"></span>
                             <span class="incl-range"></span>
                             <input name="rangeOne" value="@((int)Model.Products.Select(p=>p.Price).Min())" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
                             <input name="rangeTwo" value="@((int)Model.Products.Select(p=>p.Price).Max())" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
-                            <span class="font-weight-normal small text-muted ml-2">$@((int)Model.Products.Select(p => p.Price).Max())</span>
                         </section>
                         <!-- Section: Price -->
                         <!--Category-->
