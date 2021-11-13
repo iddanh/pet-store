@@ -78,7 +78,7 @@ namespace pet_store.Controllers
         {
             var query_res = from order in _context.Order
                             join user in _context.User
-                            on order.User.Id equals user.Id
+                            on order.User equals user.Id
                             select new
                             {
                                 user,
