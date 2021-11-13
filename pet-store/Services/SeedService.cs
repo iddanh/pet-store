@@ -17,10 +17,12 @@ namespace pet_store.Services
     {
         private const int QUANTITY = 25;
         private readonly PetStoreDBContext _context;
+        string _seed_api_token;
 
-        public SeedService(PetStoreDBContext context)
+        public SeedService(PetStoreDBContext context, string seed_api_token="")
         {
             _context = context;
+            //_seed_api_token = seed_api_token;
         }
 
 

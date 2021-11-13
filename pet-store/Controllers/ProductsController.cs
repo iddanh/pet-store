@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using pet_store.Data;
 using pet_store.Models;
 using pet_store.Services;
@@ -18,12 +19,14 @@ namespace pet_store.Controllers
         private readonly PetStoreDBContext _context;
         private readonly ProductsService _service;
         private readonly SeedService _seed;
+        string _seed_api_token;
 
-        public ProductsController(PetStoreDBContext context, ProductsService service, SeedService seed)
+        public ProductsController(PetStoreDBContext context, ProductsService service, SeedService seed, IConfiguration configuration)
         {
             _context = context;
             _service = service;
             _seed = seed;
+            _seed_api_token = configuration.GetValue<string>("SeedApiToken");
         }
 
         // GET: Products

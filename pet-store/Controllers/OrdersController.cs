@@ -38,6 +38,11 @@ namespace pet_store.Controllers
             return View(orders);
         }
 
+        //POST: Orders/Search
+        public async Task<IActionResult> OrderSearch(int? fromPrice, int? untilPrice, int[] usersIds, int[] productsIds, string city, DateTime? from, DateTime? until)
+        {
+            return View();
+        }
         public async Task<IActionResult> ClearCart()
         {
             return View();
