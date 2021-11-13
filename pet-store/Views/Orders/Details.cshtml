@@ -46,6 +46,23 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.OrderNotes)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Products)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var item in Model.Products)
+            {
+                <div class="col mb-2">
+                    <a class="products-index-wrapper" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">
+                        <div class="text-center image-wrapper">
+                            <img src="@item.Image" />
+                        </div>
+                        <div class="name mt-2"><b>@Html.DisplayFor(modelItem => item.Company)</b> @Html.DisplayFor(modelItem => item.Name)</div>
+                        <div class="price mt-3">@Html.DisplayFor(modelItem => item.Price)$</div>
+                    </a>
+                </div>
+            }
+        </dd>
     </dl>
 </div>
 <div>

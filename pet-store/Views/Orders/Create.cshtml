@@ -1,55 +1,50 @@
 ﻿@model pet_store.Models.Order
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Checkout Page";
 }
 
-<h1>Create</h1>
+<h4 class="pt-4">Order</h4>
 
-<h4>Order</h4>
-<div id="cart-content">
-</div>
+<div id="cart-content"></div>
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10 offset-md-1">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" readonly id="priceinput" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+            <div style="display: flex">
+                <div class="form-group mr-2" style="flex: 1">
+                    <input asp-for="City" placeholder="@Html.DisplayNameFor(model => model.City)" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="form-group mr-2" style="flex: 1">
+                    <input asp-for="Street" placeholder="@Html.DisplayNameFor(model => model.Street)" class="form-control" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="flex: 1">
+                    <input asp-for="Apartment" placeholder="@Html.DisplayNameFor(model => model.Apartment)" class="form-control" />
+                    <span asp-validation-for="Apartment" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+            <div style="display: flex">
+                <div class="form-group mr-2" style="flex: 1">
+                    <textarea asp-for="OrderNotes" placeholder="@Html.DisplayNameFor(model => model.OrderNotes)" class="form-control" style="height: 100%"></textarea>
+                    <span asp-validation-for="OrderNotes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Total price:</label>
+                    <div style="display:flex;align-items: center"><input asp-for="Price" readonly id="priceinput" class="form-control mr-1" style="width: 100px" /><span>$</span></div>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
             </div>
+
+            <input type="hidden" name="productIds" id="productsinput" />
             <div class="form-group">
-                <label asp-for="Street" class="control-label"></label>
-                <input asp-for="Street" class="form-control" />
-                <span asp-validation-for="Street" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Apartment" class="control-label"></label>
-                <input asp-for="Apartment" class="form-control" />
-                <span asp-validation-for="Apartment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderNotes" class="control-label"></label>
-                <input asp-for="OrderNotes" class="form-control" />
-                <span asp-validation-for="OrderNotes" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Products" id="productinput"/>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary btn-lg"><span class="oi oi-cart"></span> Place Order</button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
@@ -60,7 +55,4 @@
     </script>
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
-
-
 }
