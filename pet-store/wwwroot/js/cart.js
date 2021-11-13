@@ -1,5 +1,5 @@
 ﻿function getCartContents() {
-    let cart = window.sessionStorage.getItem('cart');
+    let cart = window.localStorage.getItem('cart');
     if (cart) {
         try {
             return JSON.parse(cart);
@@ -11,7 +11,7 @@
 }
 
 function setCartContents(cart) {
-    window.sessionStorage.setItem('cart', JSON.stringify(cart));
+    window.localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 function addToCart(product) {

@@ -15,7 +15,7 @@ namespace pet_store.Controllers
     {
 
         private readonly PetStoreDBContext _context;
-        string _fb_api_token;
+        private string _fb_api_token;
 
 
         public AdminManagerController(PetStoreDBContext context, IConfiguration configuration)
@@ -87,7 +87,9 @@ namespace pet_store.Controllers
                             group user2order by user2order.order.User into g
                             select new
                             {
-                                UserName = g.Key.ToString(),
+                                UserName = (from user in _context.User
+                                            where user.Id == g.Key
+                                            select user.FullName).FirstOrDefault(),
                                 OrderCount = g.Count()
                             };
             Dictionary<string, int> res = new Dictionary<string, int>();
