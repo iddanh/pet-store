@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 appsettings.json
+appsettings.Developement.json
+/pet-store/appsettings.Development.json
