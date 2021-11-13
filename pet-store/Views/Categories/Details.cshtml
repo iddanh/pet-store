@@ -5,23 +5,112 @@
 }
 
 <h1>@Html.DisplayFor(model => model.Name)</h1>
-
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-    @foreach (var item in Model.Products)
-    {
-        <div class="col mb-2">
-            <a class="products-index-wrapper" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">
-                <div class="text-center image-wrapper">
-                    <img src="@item.Image" />
-                </div>
-                <div class="name mt-2"><b>@Html.DisplayFor(modelItem => item.Company)</b> @Html.DisplayFor(modelItem => item.Name)</div>
-                <div class="price mt-3">@Html.DisplayFor(modelItem => item.Price)$</div>
-            </a>
-        </div>
-    }
+<div class="row">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent">
+            <li class="breadcrumb-item active" aria-current="page" id="current">@Html.DisplayFor(model => model.Name)</li>
+            <li style="visibility:hidden" id="category" value="@Model.ParentId"></li>
+        </ol>
+    </nav>
 </div>
 
+<div class="container">
+    <h4>@Html.DisplayFor(model => model.Name)</h4>
+    <hr />
+    <div class="row mt-5">
+        <!--Grid column-->
+        <aside class="col-md-4 mb-4">
+            <!-- Section: Sidebar -->
+            <section>
+                <!-- Section: Filters -->
+                <section>
+                    <form id="searchForm" asp-controller="Products" asp-action="search">
+                        <h5>Filter Products</h5>
+                        <input style="visibility:hidden" id="inpCategory" value="@Model.Name">
+                        <!--Brand-->
+                        <section class="navbar-brand">
+                            @foreach (Product product in Model.Products)
+                            {
+                                <div class="col">
+                                    <input class="name mt-2" type="checkbox" id="brand">
+                                    <label for="brand">@Html.DisplayFor(modelItem => product.Company)</label>
+                                </div>
+                            }
+                        </section>
+                        <!-- Section: Price -->
+                        <section class="range-slider container mb-4 mt-2">
+                            <h6 class="font-weight-bold mb-3">Price</h6>
+                            <span class="font-weight-normal small text-muted ml-2">$0</span>
+                            <span class="output outputOne"></span>
+                            <span class="output outputTwo"></span>
+                            <span class="full-range"></span>
+                            <span class="incl-range"></span>
+                            <input name="rangeOne" value="0" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
+                            <input name="rangeTwo" value="425" min="@((int)Model.Products.Select(p=>p.Price).Min())" max="@((int)Model.Products.Select(p=>p.Price).Max())" step="1" type="range">
+                            <span class="font-weight-normal small text-muted ml-2">$@((int)Model.Products.Select(p => p.Price).Max())</span>
+                        </section>
+                        <!-- Section: Price -->
+                        <!--Category-->
+                        <section>
+                            @foreach (var product in Model.Products.GroupBy(x => x.Category))
+                            {
+                                <div class="col">
+                                    <input class="name mt-2" type="checkbox" id="category">
+                                    <label for="category">@Html.DisplayFor(modelItem => product.Key.Name)</label>
+                                </div>
+                            }
+                        </section>
+                    </form>
+                </section>
+                <!-- Section: Filters -->
+                <button id="btnSearch" type="button">Filter</button>
+            </section>
+            <!-- Section: Sidebar -->
+        </aside>
+        <div class="col-md-8 mb-4">
+            <dl class="row">
+                <dd class="col-sm-10">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4" id="prodList">
+                        @foreach (var item in Model.Products)
+                        {
+                            <div class="col mb-2">
+                                <a class="products-index-wrapper" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">
+                                    <div class="text-center image-wrapper">
+                                        <img src="@item.Image" />
+                                    </div>
+                                    <div class="name mt-2"><b>@Html.DisplayFor(modelItem => item.Company)</b> @Html.DisplayFor(modelItem => item.Name)</div>
+                                    <div class="price mt-3">@Html.DisplayFor(modelItem => item.Price)$</div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script type="text/template" id="template">
+    <div class="col mb-2">
+        <a class="products-index-wrapper" href="/Products/Details/${id}">
+            <div class="text-center image-wrapper">
+                <img src="${image}" />
+            </div>
+            <div class="name mt-2"><b>${company}</b> ${name}</div>
+            <div class="price mt-3">${price}$</div>
+        </a>
+    </div>
+</script>
+
+<script type="text/template" id="breadcrumbs">
+    <li class="breadcrumb-item"><a href="/Categories/Details/${id}">${name}</a></li>
+</script>
+
+@section Scripts {
+    <script src="~/js/search.js"></script>
+    <script src="~/js/breadcrumbs.js"></script>
+}

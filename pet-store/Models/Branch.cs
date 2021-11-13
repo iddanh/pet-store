@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace pet_store.Models
 {
-    public class Branches
+    public class Branch
     {
         [Key]
         public int Id { get; set; }

@@ -6,10 +6,12 @@
 
 <div>
     <div class="row">
-        <div class="col">
-            <!-- TODO: categories breadcrumbs  -->
-            @Html.DisplayFor(model => model.Category.Name)
-        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent">
+                <li class="breadcrumb-item active" aria-current="page" id="current">@Html.DisplayFor(model => model.Name)</li>
+                <li style="visibility:hidden" id="category" value="@Model.CategoryId"></li>
+            </ol>
+        </nav>
     </div>
 
     <div class="row mt-2 product-wrapper">
@@ -32,12 +34,16 @@
     </div>
 </div>
 <div class="mt-2">
-    @if (Context != null && Context.User.Identity.IsAuthenticated && Model.Supplier.ToString() == Context.User.Claims.First().Value)
+    @if (Context != null && Context.User.Identity.IsAuthenticated && Model.Supplier.ToString() == Context.User.Claims.First().Value || Context.User.IsInRole(nameof(UserType.Admin)))
     {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>@:&nbsp;|&nbsp;
     }
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script type="text/template" id="breadcrumbs">
+    <li class="breadcrumb-item"><a href="/Categories/Details/${id}">${name}</a></li>
+</script>
 
 @section Scripts {
     <script type="text/javascript">
@@ -56,6 +62,6 @@
             });
         });
     </script>
-
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/breadcrumbs.js"></script>
 }

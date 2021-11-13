@@ -16,10 +16,14 @@ namespace pet_store.Controllers
     public class ProductsController : Controller
     {
         private readonly PetStoreDBContext _context;
+        private readonly ProductsService _service;
+        private readonly SeedService _seed;
 
-        public ProductsController(PetStoreDBContext context)
+        public ProductsController(PetStoreDBContext context, ProductsService service, SeedService seed)
         {
             _context = context;
+            _service = service;
+            _seed = seed;
         }
 
         // GET: Products
@@ -32,10 +36,31 @@ namespace pet_store.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var product = await _context.Category.ToListAsync();
+            ViewBag.Categories = new SelectList(_context.Category, "Name", "Name");
+            ViewBag.Companies = new SelectList(_context.Product, nameof(Product.Company), nameof(Product.Company));
+            var product = _context.Product.Include(p => p.Category);
+            
+            return View(await product.ToListAsync());
+        }
 
-            return View(await _context.Product.ToListAsync());
+        //POST:Search
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GlobalSearch(string searchString, string productCategory, string productCompany)
+        {
+            ViewBag.Categories = new SelectList(_context.Category, "Name", "Name");
+            ViewBag.Companies = new SelectList(_context.Product, nameof(Product.Company), nameof(Product.Company));
+            var products = _service.Search(searchString, productCategory, productCompany).Include(x => x.Category);
+            return View("Index", await products.ToListAsync());
+        }
 
+        //POST:Search Json
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(string searchString, string productCategory, string productCompany, double minPrice, double maxPrice)
+        {
+            var products = _service.Search(searchString, productCategory, productCompany, minPrice, maxPrice).Include(x => x.Category);
+            return Json(await products.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -112,6 +137,9 @@ namespace pet_store.Controllers
                 return Forbid();
             }
             ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
+            var suppliers = await _context.User.Where(u => u.Type.Equals(UserType.Supplier)).ToListAsync();
+            ViewBag.Suppliers = new SelectList(suppliers, "Id", "FullName");
+
 
             return View(product);
         }
@@ -201,6 +229,51 @@ namespace pet_store.Controllers
         private bool ProductExists(int id)
         {
             return _context.Product.Any(e => e.Id == id);
+        }
+        [HttpPost]
+        [Authorize(Roles = nameof(UserType.Admin))]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAll()
+        {
+
+            foreach (var product in _context.Product)
+            {
+                if (product.Id > 5)
+                {
+                    _context.Product.Remove(product);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles = nameof(UserType.Admin))]
+        public async Task<IActionResult> Seed()
+        {
+            foreach (var product in _context.Product)
+            {
+                if (product.Name.Contains(product.Company))
+                {
+                    //product.Name = new StringBuilder().AppendJoin(' ',product.Name.Split().Except(product.Company.Split())).ToString();
+                    //product.Company = new StringBuilder().AppendJoin(' ',product.Name.Split().Take(3)).ToString();
+                    _context.Update(product);
+                }
+            }
+            await _context.SaveChangesAsync();
+
+            /*
+            if (_context.Product.Count() < 4)
+            {
+                //await _seed.GooProSearch();
+            }
+            */
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> GetBreadCrumbs(int categoryId)
+        {
+            var breadCrumbs = _service.GetBreadCrumbs(await _context.Category.FindAsync(categoryId));
+            return Json(breadCrumbs);
         }
     }
 }

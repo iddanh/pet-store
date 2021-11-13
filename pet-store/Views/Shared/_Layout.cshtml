@@ -38,11 +38,11 @@
                             <a class="nav-link text-white font-weight-bold" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
                         </li>
                     </ul>
-                    <form class="form-inline">
+                    <form class="form-inline" asp-controller="Products" asp-action="GlobalSearch">
                         <div class="input-group mr-4">
-                            <input class="form-control border-0" type="search" placeholder="Search" aria-label="Search">
+                            <input class="form-control border-0" name="searchString" type="search" placeholder="Search" aria-label="Search">
                             <div class="input-group-append">
-                                <button class="btn btn-light bg-white" type="button"><span class="oi oi-magnifying-glass"></span></button>
+                                <button class="btn btn-light bg-white" type="submit"><span class="oi oi-magnifying-glass" type="button"></span></button>
                             </div>
                         </div>
                     </form>
@@ -78,6 +78,15 @@
                     </div>
                 </div>
             </div>
+            <div class="nav-item forecast">
+                <div class='day'>
+                    <div class='date'></div>
+                    <div class='icon'></div>
+                    <div class='maxt'></div>
+                    <div class='mint'></div>
+                    <div class='conditions'></div>
+                </div>
+            </div>
         </nav>
     </header>
     <div class="container" id="main-page">
@@ -98,6 +107,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/cart.js"></script>
+    <script src="~/js/weather.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
