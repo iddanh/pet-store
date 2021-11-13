@@ -1,4 +1,5 @@
-﻿using pet_store.Data;
+﻿using Microsoft.Extensions.Configuration;
+using pet_store.Data;
 using pet_store.Models;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,12 @@ namespace pet_store.Services
     {
         private const int QUANTITY = 25;
         private readonly PetStoreDBContext _context;
+        string _seed_api_token;
 
-        public SeedService(PetStoreDBContext context)
+        public SeedService(PetStoreDBContext context, IConfiguration configuration)
         {
             _context = context;
+            _seed_api_token = configuration.GetValue<string>("SeedApiToken");
         }
 
 
@@ -28,6 +31,7 @@ namespace pet_store.Services
         {
             var baseURL = "https://serpapi.com/search.json?engine=google&tbm=shop&q=";
             var apiKey = "&api_key=a6b0302209798e2eff9f705e466950ffc61e078cbec5b88e842b2e3839b0655d";
+            apiKey = _seed_api_token;
             foreach (var category in _context.Category) try
                 {
                     if (category.Name.Equals("Food") || category.Name.Equals("Toys"))
