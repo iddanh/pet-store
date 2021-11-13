@@ -251,3 +251,303 @@ nav.navbar .container {
 
 .fb-page {    
 }
+
+/* double thumbed slider
+-------------------------------------------------- */
+.range-slider {
+    position: relative;
+    width: 200px;
+    height: 35px;
+    text-align: center;
+}
+
+    .range-slider input {
+        pointer-events: none;
+        position: absolute;
+        overflow: hidden;
+        left: 0;
+        top: 15px;
+        width: 200px;
+        outline: none;
+        height: 18px;
+        margin: 0;
+        padding: 0;
+    }
+
+        .range-slider input::-webkit-slider-thumb {
+            pointer-events: all;
+            position: relative;
+            z-index: 1;
+            outline: 0;
+        }
+
+        .range-slider input::-moz-range-thumb {
+            pointer-events: all;
+            position: relative;
+            z-index: 10;
+            -moz-appearance: none;
+            width: 9px;
+        }
+
+        .range-slider input::-moz-range-track {
+            position: relative;
+            z-index: -1;
+            background-color: rgba(0, 0, 0, 1);
+            border: 0;
+        }
+
+        .range-slider input:last-of-type::-moz-range-track {
+            -moz-appearance: none;
+            background: none transparent;
+            border: 0;
+        }
+
+        .range-slider input[type=range]::-moz-focus-outer {
+            border: 0;
+        }
+
+.rangeValue {
+    width: 30px;
+}
+
+.output {
+    position: absolute;
+    border: 1px solid #999;
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    color: #999;
+    border-radius: 4px;
+    display: inline-block;
+    font: bold 15px/30px Helvetica, Arial;
+    bottom: 75%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+    .output.outputTwo {
+        left: 100%;
+    }
+
+
+input[type=range] {
+    -webkit-appearance: none;
+    background: none;
+}
+
+    input[type=range]::-webkit-slider-runnable-track {
+        height: 5px;
+        border: none;
+        border-radius: 3px;
+        background: transparent;
+    }
+
+    input[type=range]::-ms-track {
+        height: 5px;
+        background: transparent;
+        border: none;
+        border-radius: 3px;
+    }
+
+    input[type=range]::-moz-range-track {
+        height: 5px;
+        background: transparent;
+        border: none;
+        border-radius: 3px;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #555;
+        margin-top: -5px;
+        position: relative;
+        z-index: 10000;
+    }
+
+    input[type=range]::-ms-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #555;
+        margin-top: -5px;
+        position: relative;
+        z-index: 10000;
+    }
+
+    input[type=range]::-moz-range-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #555;
+        margin-top: -5px;
+        position: relative;
+        z-index: 10000;
+    }
+
+    input[type=range]:focus {
+        outline: none;
+    }
+
+.full-range,
+.incl-range {
+    width: 100%;
+    height: 5px;
+    left: 0;
+    top: 21px;
+    position: absolute;
+    background: #DDD;
+}
+
+.incl-range {
+    background: #1861ac;
+}
+
+
+/*weather
+-------------------------------------------------- */
+.forecast {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #ffffff;
+    margin: 10px;
+    border-radius: 7px;
+    line-height: 1px;
+    background-color: #8ff0ff;
+}
+
+    .forecast .day {
+        display: grid;
+        grid-template-columns: 75% 25%;
+        justify-content: center;
+        align-items: center;
+        padding: 0px 5px;
+        font-size: 1em;
+        justify-items: center;
+        grid-gap: 1px;
+    }
+
+        /*most forecast elements take up two columns*/
+        .forecast .day * {
+            grid-column: span 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /*maximum and minimum temprature elements are arrange side by side*/
+        .forecast .day .maxt {
+            grid-column: 1;
+            font-weight: bold;
+        }
+
+        .forecast .day .mint {
+            grid-column: 2;
+            font-size: 0.9em;
+            color: black;
+        }
+
+    .forecast .location {
+        font-size: 1em;
+        font-weight: bold;
+        flex: 0;
+    }
+
+    .forecast .footer {
+        font-size: 0.7em;
+        color: black;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .forecast .day .date {
+        color: black;
+        font-size: 0.9em;
+        white-space: nowrap;
+    }
+
+
+    .forecast .day:not(:last-child) {
+        border-right: 1px solid black;
+    }
+
+
+    .forecast .day .conditions {
+        display: none;
+        color: black;
+        font-size: 0.9em;
+    }
+
+
+    .forecast .day .hidden {
+        visibility: hidden;
+    }
+
+
+    .forecast .icon {
+        width: 40px;
+        height: 40px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+        .forecast .icon.snow-day {
+            background: url(/lib/bootstrap/bootstrap-icons-1.6.0/snow.svg)
+        }
+
+        .forecast .icon.rain-day {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-rain.svg);
+        }
+
+        .forecast .icon.rain-night {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-rain.svg);
+        }
+
+        .forecast .icon.fog-day {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-fog.svg);
+        }
+
+        .forecast .icon.fog-night {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-fog-fill.svg);
+        }
+
+        .forecast .icon.wind-day {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/wind.svg);
+        }
+
+        .forecast .icon.wind-night {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/wind.svg);
+        }
+
+        .forecast .icon.cloudy-day {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/clouds.svg);
+        }
+
+        .forecast .icon.cloudy-night {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/clouds-fill.svg);
+        }
+
+        .forecast .icon.pcloudy-day {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-sun.svg);
+        }
+
+        .forecast .icon.pcloudy-night {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/cloud-moon.svg);
+        }
+
+        .forecast .icon.clear-day {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/sun.svg);
+        }
+
+        .forecast .icon.clear-night {
+            background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/moon.svg);
+        }
