@@ -33,12 +33,12 @@
                             {
                                 foreach (Product prod in Model.Products)
                                 {
-                                    if (prod.Company.Contains(company))
+                                    if (prod.Company.Equals(company))
                                     {
-                                <div class="col">
-                                    <input class="name mt-2 brand" type="checkbox" data-brandsname="@Html.DisplayFor(modelItem => prod.Company)">
-                                    <label for="brand">@Html.DisplayFor(modelItem => prod.Company)</label>
-                                </div>
+                                        <div class="col">
+                                            <input class="name mt-2 brand" type="checkbox" data-brandsname="@Html.DisplayFor(modelItem => prod.Company)">
+                                            <label for="brand">@Html.DisplayFor(modelItem => prod.Company)</label>
+                                        </div>
                                         break;
                                     }
                                 }
