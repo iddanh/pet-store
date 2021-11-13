@@ -84,7 +84,7 @@ namespace pet_store.Controllers
                                 user,
                                 order
                             } into user2order
-                            group user2order by user2order.user.Id into g
+                            group user2order by user2order.order.User into g
                             select new
                             {
                                 UserName = g.Key.ToString(),

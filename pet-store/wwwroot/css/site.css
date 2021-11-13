@@ -83,8 +83,10 @@ nav.navbar {
     background-color: #128ced;
 }
 
-#main-page{
-    background-color: transparent;
+#main-page {
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 30px;
+    border-radius: 3px;
 }
 
 nav.navbar .container {
