@@ -22,9 +22,13 @@ namespace pet_store.Controllers
         }
 
         // GET: Orders
-        [Authorize(Roles = nameof(UserType.Customer))]
         public async Task<IActionResult> Index()
         {
+            if (!User.GetIsLoggedIn())
+            {
+                return Forbid();
+            }
+
             ViewBag.Users = new SelectList(_context.User, "Id", "FullName");
             List<Order> orders;
             if (User.IsAdmin())
