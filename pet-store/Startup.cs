@@ -27,6 +27,7 @@ namespace pet_store
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddDbContext<PetStoreDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("pet_storeContext")));

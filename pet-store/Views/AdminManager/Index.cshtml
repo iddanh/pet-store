@@ -1,7 +1,13 @@
-﻿@{
+﻿@model pet_store.Models.PostMessage
+
+@{
     ViewData["Title"] = "AdminStatistics";
 }
 <style>
+    .adlist {
+        text-align: center;
+        color: black;
+    }
 
     .bar {
         fill: steelblue;
@@ -13,7 +19,7 @@
 
     .graph {
         min-width: 100px;
-        height: 100px;
+        min-height: 400px;
         border: 1px;
         background-color: transparent;
         margin: 0 auto;
@@ -25,14 +31,55 @@
         float: left;
     }
 
+    .form-control {
+        width: 50%;
+        height: 50px
+    }
+
+    .fb-item {
+        width: 50%;
+        float: left;
+    }
 </style>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=1524054354624709&autoLogAppEvents=1" nonce="cSfgKTId"></script>
+
 <div class="text-center">
-    <h1 class="display-4">Admin Statistics</h1>
+    <br />
+
+    <h1 class="display-3 bold">Admin Manager Actions: </h1>
+    <br />
+    <div class="list-inline text-center d-flex justify-content-center align-items-center">
+        <ul class="list-group align-content-center list-group-horizontal">
+            <li class="list-group-item">
+                <a class="nav-link  font-weight-bold" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+            </li>
+            <li class="list-group-item">
+                <a class="nav-link font-weight-bold" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+            </li>
+            <li class="list-group-item">
+                <a class="nav-link font-weight-bold" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+            </li>
+            <li class="list-group-item">
+                <a class="nav-link font-weight-bold" asp-area="" asp-controller="Branches" asp-action="Index">Branches</a>
+            </li>
+        </ul>
+    </div>
+    <br />
+    <br />
     <br />
     <br />
     <br />
 </div>
+
+<h3 class="display-4 bold">Admin Statistics: </h3>
+
+<br />
+<br />
+<br />
+<br />
 <div class="graph">
+
     <div class="statsBox">
         <h3>Corrent orders:</h3>
         <div class="graph" id="UserStatistics"></div>
@@ -47,11 +94,34 @@
         <div id="LatestUsers"></div>
     </div>
 </div>
+<br />
+<br />
+<br />
+
+<br />
+<br />
+
+<div>
+    <div class="fb-item">
+        <form asp-action="PostOnFacbook">
+            <input asp-for="Message" class="form-control" rows="5" />
+            <br />
+            <input type="submit" value="PostToFacebook" class="btn btn-primary" name="Post" />
+        </form>
+    </div>
+    <div class="fb-item">
+        <div class="fb-page" data-href="https://www.facebook.com/PetStore-102326535608952" data-tabs="timeline" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/PetStore-102326535608952" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/PetStore-102326535608952">PetStore</a></blockquote></div>
+    </div>
+</div>
+
 @section Scripts {
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="~/js/createChart.js"></script>
 
     <script type="text/javascript">
+
+
+
         $(() => {
             setInterval(loadDataFromServer(), 10000);
         });
@@ -76,14 +146,14 @@
                 }
             })
             $.ajax({
-                type: "Get",    
+                type: "Get",
                 url: '@Url.Action("GetLastestRegisteredUsersInfo")',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     $("#LatestUsers").empty();
 
-                    for (const [key, value] of Object.entries(data).reverse()) {
+                    for (const [key, value] of Object.entries(data)) {
                         $("#LatestUsers").append("<div>" + key + ": " + value + "</div>")
                     }
                 }
