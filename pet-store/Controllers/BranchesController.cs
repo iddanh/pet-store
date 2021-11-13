@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using pet_store.Models;
 using Newtonsoft.Json;
-
+using pet_store.Services;
 
 namespace pet_store.Controllers
 {
@@ -51,8 +51,10 @@ namespace pet_store.Controllers
 
         // GET: Branches/Create
         [Authorize(Roles = "Admin,Supplier")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var userids = await _context.User.Where(u => u.Type.Equals(UserType.Supplier) && u.Branch == null).ToListAsync();
+            ViewData["UserIds"] = new SelectList(userids, "Id", "FullName");
             return View();
         }
 

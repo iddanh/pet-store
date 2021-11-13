@@ -220,7 +220,7 @@ namespace pet_store.Controllers
             {
                 return Forbid();
             }
-
+            
             if (ModelState.IsValid)
             {
                 var oldUser = await _context.User.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);

@@ -149,6 +149,7 @@ namespace pet_store.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,Supplier,Name,Description,CategoryId,Price,Company,Image")] Product product)
         {
             if (id != product.Id)
@@ -203,6 +204,7 @@ namespace pet_store.Controllers
             {
                 return Forbid();
             }
+            
 
             return View(product);
         }
@@ -217,6 +219,7 @@ namespace pet_store.Controllers
             {
                 return Forbid();
             }
+            
             _context.Product.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

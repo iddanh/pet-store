@@ -251,6 +251,25 @@ nav.navbar .container {
     margin-top: 100px;
     border-radius: 3px;
 }
+    .fb-page
+
+{
+}
+
+
+/*weather
+-------------------------------------------------- */
+.forecast {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #ffffff;
+    margin: 10px;
+    border-radius: 7px;
+    line-height: 1px;
+    background-color: #8ff0ff;
+}
 
 .fb-page {    
 }

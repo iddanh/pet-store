@@ -34,7 +34,7 @@ namespace pet_store.Migrations
                     b.ToTable("OrderProduct");
                 });
 
-            modelBuilder.Entity("pet_store.Models.Branches", b =>
+            modelBuilder.Entity("pet_store.Models.Branch", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,9 +59,15 @@ namespace pet_store.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Branch");
                 });
 
             modelBuilder.Entity("pet_store.Models.Category", b =>
@@ -118,10 +124,12 @@ namespace pet_store.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("User")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -235,6 +243,11 @@ namespace pet_store.Migrations
             modelBuilder.Entity("pet_store.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("pet_store.Models.User", b =>
+                {
+                    b.Navigation("Branch");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,13 +14,11 @@
     </div>
 </div>
 
-<h1>Products</h1>
-
 @if (Context != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Supplier)))
 {
-    <p>
-        Supplier? <a asp-action="Create">Add a product</a>.
-    </p>
+<p>
+    <a href="/Products/Create" class="btn btn-outline-secondary btn-sm" role="button">Add a product</a>
+</p>
 }
 
 

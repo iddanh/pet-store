@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using pet_store.Models;
 using pet_store.Services;
+
 
 namespace pet_store.Controllers
 {
@@ -70,6 +72,7 @@ namespace pet_store.Controllers
 
         // GET: Orders/Create
         [Authorize(Roles = nameof(UserType.Customer))]
+
         public IActionResult Create()
         {
             ViewBag.now = DateTime.Today;
