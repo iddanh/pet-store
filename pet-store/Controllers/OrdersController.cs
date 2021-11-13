@@ -68,7 +68,7 @@ namespace pet_store.Controllers
             {
                 return NotFound();
             }
-            if (!AllowedModifyOrder(order.User))
+            if (User.GetIsLoggedIn() && !User.IsAdmin() && order.User != User.GetLoggedInUserId())
             {
                 return Forbid();
             }
@@ -102,7 +102,13 @@ namespace pet_store.Controllers
                     List<int> productIdsParsed = productIds.Split(',').Select(id => int.Parse(id)).ToList();
                     List<Product> products = new List<Product>();
                     productIdsParsed.ForEach(id => products.Add(_context.Product.Find(id)));
-                    order.Products = products;
+                    order.Products = products.Where(p => p != null).ToList();
+
+                    if (order.Products.Count == 0)
+                    {
+                        ViewData["Error"] = "The products you wanted to buy were removed, sorry about that!";
+                        return View(order);
+                    }
 
                     _context.Add(order);
                     await _context.SaveChangesAsync();
