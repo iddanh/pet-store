@@ -35,12 +35,33 @@ namespace pet_store.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category.Include(c => c.Products).FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Category.Include(c => c.Products).Include(c => c.Parent).FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
 
+            IEnumerable<Product> newList = new List<Product>();
+            foreach (var cat in _context.Category.Include(c => c.Products).Include(c => c.Parent))
+            {
+                var originalList = cat.Products.AsEnumerable();
+                if (cat.ParentId == id)
+                {
+                    newList = newList.Concat(originalList);
+                }
+            }
+            if (newList.Any())
+            {
+                return View(new Category
+                {
+                    Id = category.Id,
+                    Image = category.Image,
+                    Name = category.Name,
+                    Parent = category.Parent,
+                    Products = newList.ToList(),
+                    ParentId = category.ParentId
+                });
+            }
             return View(category);
         }
 
@@ -48,6 +69,7 @@ namespace pet_store.Controllers
         [Authorize(Roles = nameof(UserType.Admin))]
         public IActionResult Create()
         {
+            ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
 
@@ -57,7 +79,7 @@ namespace pet_store.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = nameof(UserType.Admin))]
-        public async Task<IActionResult> Create([Bind("Id,Name,Image")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,ParentId,Image")] Category category)
         {
             if (ModelState.IsValid)
             {

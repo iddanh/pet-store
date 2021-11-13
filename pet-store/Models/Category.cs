@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,10 @@ namespace pet_store.Models
         [Required]
         public int Id { get; set; }
 
+
+        [Display(Name = "Parent")]
+        public int? ParentId { get; set; }
+        [ForeignKey("ParentId")]
         public Category Parent { get; set; }
 
         [Required]

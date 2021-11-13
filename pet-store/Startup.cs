@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using pet_store.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using pet_store.Services;
 
 namespace pet_store
 {
@@ -27,6 +28,7 @@ namespace pet_store
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddDbContext<PetStoreDBContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("pet_storeContext")));
@@ -35,7 +37,9 @@ namespace pet_store
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
             });
-
+            services.AddTransient<ProductsService>();
+            services.AddTransient<UsersService>();
+            services.AddTransient<SeedService>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>
                 {
