@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using pet_store.Data;
+using pet_store.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace pet_store.Controllers
@@ -12,10 +15,13 @@ namespace pet_store.Controllers
     {
 
         private readonly PetStoreDBContext _context;
+        string _fb_api_token;
 
-        public AdminManagerController(PetStoreDBContext context)
+
+        public AdminManagerController(PetStoreDBContext context, IConfiguration configuration)
         {
             _context = context;
+            _fb_api_token = configuration.GetValue<string>("FacebookApiToken");
         }
 
         [Authorize(Roles = "Admin")]
@@ -23,6 +29,25 @@ namespace pet_store.Controllers
         {
             return View();
         }
+
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> PostOnFacbook([Bind("Message")] PostMessage postMessage)
+        {
+            string pageId = "102326535608952";
+            string facebookApiUrl = "https://graph.facebook.com/";
+
+            string postReqUrl = facebookApiUrl + pageId + "/feed?message=" + postMessage.Message + "&access_token=" + _fb_api_token;
+            HttpClient client = new HttpClient();
+
+            var response = await client.PostAsync(postReqUrl, null);
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
         [Authorize(Roles = "Admin")]
         public JsonResult GetProductsCategorySizes()
@@ -52,20 +77,28 @@ namespace pet_store.Controllers
         public JsonResult GetUsersOrderStatistics()
         {
             var query_res = from order in _context.Order
-                            group order by order.User into g
+                            join user in _context.User
+                            on order.User equals user.Id
                             select new
                             {
-                                UserName = (from user in _context.User
-                                           where user.Id == g.Key
-                                           select user.FullName).FirstOrDefault(),
+                                user,
+                                order
+                            } into user2order
+                            group user2order by user2order.order.User into g
+                            select new
+                            {
+                                UserName = g.Key.ToString(),
                                 OrderCount = g.Count()
                             };
             Dictionary<string, int> res = new Dictionary<string, int>();
-            foreach (var item in query_res)
+            try
             {
-                res.Add(item.UserName, item.OrderCount);
+                foreach (var item in query_res)
+                {
+                    res.Add(item.UserName, item.OrderCount);
+                }
             }
-
+            catch { }
             return Json(res);
 
         }
@@ -75,13 +108,13 @@ namespace pet_store.Controllers
         [Authorize(Roles = "Admin")]
         public JsonResult GetLastestRegisteredUsersInfo()
         {
-            var query_res = (from user in _context.User                           
+            var query_res = (from user in _context.User
                              orderby user.RegisterTime descending
-                            select new
-                            {
-                                UserName = user.FullName ?? user.Id.ToString(),
-                                RegisterTime = user.RegisterTime.ToString()
-                            }).Take(5);
+                             select new
+                             {
+                                 UserName = user.FullName ?? user.Id.ToString(),
+                                 RegisterTime = user.RegisterTime.ToString()
+                             }).Take(5);
             Dictionary<string, string> res = new Dictionary<string, string>();
             foreach (var item in query_res)
             {

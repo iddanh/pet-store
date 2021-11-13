@@ -4,7 +4,7 @@ function createD3BarChart(data, id) {
 
     const dataKeys = Object.keys(data);
 
-    const dataToDisplay = dataKeys.map(key => ({ genre: key, number: data[key] }))
+    const dataToDisplay = dataKeys.map(key => ({ xcol: key, ycol: data[key] }))
 
     var margin = { top: 20, right: 20, bottom: 100, left: 60 },
         width = 300 - margin.left - margin.right,
@@ -32,9 +32,9 @@ function createD3BarChart(data, id) {
         .append("g")
         .attr("transform", "translate(60,20)");
 
-    x.domain(dataToDisplay.map(data => data.genre));
+    x.domain(dataToDisplay.map(data => data.xcol));
 
-    y.domain([0, d3.max(dataToDisplay, data => data.number)]);
+    y.domain([0, d3.max(dataToDisplay, data => data.ycol)]);
 
     svg.append("g")
         .attr("class", "x axis")
@@ -63,9 +63,9 @@ function createD3BarChart(data, id) {
         .enter()
         .append("rect")
         .style({ "fill": " #007bff", "shape-rendering": "crispEdges" })
-        .attr("x", data => x(data.genre))
+        .attr("x", data => x(data.xcol))
         .attr("width", x.rangeBand())
-        .attr("y", data => y(data.number))
-        .attr("height", data => (height - y(data.number)));
+        .attr("y", data => y(data.ycol))
+        .attr("height", data => (height - y(data.ycol)));
 
 }

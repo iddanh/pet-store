@@ -90,7 +90,7 @@ nav.navbar {
 }
 
 nav.navbar .container {
-    color: #fff;
+    background-color: transparent;
 }
 
     nav.navbar .cart-container {
