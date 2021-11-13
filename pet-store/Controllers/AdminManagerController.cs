@@ -30,8 +30,6 @@ namespace pet_store.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PostOnFacbook([Bind("Message")] PostMessage postMessage)

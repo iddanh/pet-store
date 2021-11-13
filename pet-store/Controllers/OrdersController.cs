@@ -31,7 +31,7 @@ namespace pet_store.Controllers
                 return Forbid();
             }
 
-            ViewBag.Users = new SelectList(_context.User, "Id", "FullName");
+            ViewBag.Users = _context.User.ToList();
             List<Order> orders;
             if (User.IsAdmin())
             {
@@ -61,8 +61,9 @@ namespace pet_store.Controllers
             {
                 return NotFound();
             }
-            
+
             var order = await _context.Order.Include(c => c.Products).FirstOrDefaultAsync(m => m.Id == id);
+            ViewBag.User = await _context.User.FirstOrDefaultAsync(u => u.Id == order.User);
             if (order == null)
             {
                 return NotFound();

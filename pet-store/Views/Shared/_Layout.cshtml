@@ -58,7 +58,7 @@
                                  
                                 if (Context.User.IsInRole(nameof(UserType.Admin)))
                                 {
-                                    <a class="text-white manager-container" asp-controller="AdminManager" title="Admin"><span class="oi oi-bar-chart"></span></a>
+                                    <a class="text-white manager-container" asp-controller="AdminManager" asp-action="Index" title="Admin"><span class="oi oi-bar-chart"></span></a>
                                 }
                             }
                             else
@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <div class="nav-item forecast">
+            <div class="forecast">
                 <div class='day'>
                     <div class='date'></div>
                     <div class='icon'></div>
@@ -105,7 +105,7 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container" style="height: 75px; display: flex; align-items: center;">
             &copy; 2021 - Chewy - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             @if (Context != null && Context.User.Identity.IsAuthenticated && Context.User.IsInRole(nameof(UserType.Customer)))
             {
