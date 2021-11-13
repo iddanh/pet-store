@@ -553,3 +553,7 @@ input[type=range] {
     .forecast .icon.clear-night {
         background-image: url(/lib/bootstrap/bootstrap-icons-1.6.0/moon.svg);
     }
+
+.manager-container{
+    margin-left: 5px;
+}

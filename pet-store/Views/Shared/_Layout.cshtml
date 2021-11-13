@@ -55,6 +55,11 @@
                             {
                                 <span class="mr-2">Hello <a class="text-white font-weight-bold" asp-controller="Users" asp-action="Details" asp-route-id="@Context.User.Claims.First().Value">@Context.User.Identity.Name</a></span>
                                 <a class="text-white " asp-controller="Users" asp-action="Logout" title="Logout"><span class="oi oi-account-logout"></span></a>
+                                 
+                                if (Context.User.IsInRole(nameof(UserType.Admin)))
+                                {
+                                    <a class="text-white manager-container" asp-controller="AdminManager" title="Admin"><span class="oi oi-pencil"></span></a>
+                                }
                             }
                             else
                             {
