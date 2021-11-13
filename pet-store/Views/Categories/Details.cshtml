@@ -32,7 +32,7 @@
                             @foreach (Product product in Model.Products)
                             {
                                 <div class="col">
-                                    <input class="name mt-2" type="checkbox" id="brand">
+                                    <input class="name mt-2 brand" type="checkbox" data-brandsname="@Html.DisplayFor(modelItem => product.Company)">
                                     <label for="brand">@Html.DisplayFor(modelItem => product.Company)</label>
                                 </div>
                             }

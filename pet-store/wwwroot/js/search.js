@@ -5,6 +5,9 @@
     var inpCategory = $('#inpCategory');
     var inpCompany = $('#inpCompany');
     var token = $('input[name="__RequestVerificationToken"]').val();
+    var brands = $('.brand');
+    brands.filter(brand => brand.is(":checked")).map(brand => brand.attr('data-brandsname')).join(', ');
+
 
     if (maxPrice.val() < minPrice.val()) {
         var temp = maxPrice;
@@ -67,6 +70,7 @@ var rangeOne = document.querySelector('input[name="rangeOne"]'),
     outputOne = document.querySelector('.outputOne'),
     outputTwo = document.querySelector('.outputTwo'),
     inclRange = document.querySelector('.incl-range'),
+    
     updateView = function () {
         if (this.getAttribute('name') === 'rangeOne') {
             outputOne.innerHTML = this.value + "$";
