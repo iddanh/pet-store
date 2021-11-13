@@ -15,7 +15,6 @@
         maxPrice = minPrice;
         minPrice = temp;
     }
-    //var loader = $(this).next();
     $.ajax({
         type: "POST",
         dataType: "json",
@@ -47,7 +46,6 @@
             });
             tbody.append(temp);
         });
-        //loader.addClass('d-none');
     });
 };
 
