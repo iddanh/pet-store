@@ -1,0 +1,13 @@
+﻿
+<h3>Redirecting you...</h3>
+<div>If you are not redirected click <a asp-controller="Home" asp-action="Index">here</a>.</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(() => {
+            clearCart();
+
+            window.location.href = '/Home/Index';
+        });
+    </script>
+}

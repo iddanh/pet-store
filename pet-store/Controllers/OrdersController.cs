@@ -22,6 +22,7 @@ namespace pet_store.Controllers
         }
 
         // GET: Orders
+        [Authorize(Roles = nameof(UserType.Customer))]
         public async Task<IActionResult> Index()
         {
             ViewBag.Users = new SelectList(_context.User, "Id", "FullName");
@@ -80,17 +81,23 @@ namespace pet_store.Controllers
         {
             if (ModelState.IsValid)
             {
-                order.OrderDate = DateTime.Now;
-                order.User = User.GetLoggedInUserId();
+                if (productIds != null)
+                {
+                    order.OrderDate = DateTime.Now;
+                    order.User = User.GetLoggedInUserId();
 
-                List<int> productIdsParsed = productIds.Split(',').Select(id => int.Parse(id)).ToList();
-                List<Product> products = new List<Product>();
-                productIdsParsed.ForEach(id => products.Add(_context.Product.Find(id)));
-                order.Products = products;
+                    List<int> productIdsParsed = productIds.Split(',').Select(id => int.Parse(id)).ToList();
+                    List<Product> products = new List<Product>();
+                    productIdsParsed.ForEach(id => products.Add(_context.Product.Find(id)));
+                    order.Products = products;
 
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ClearCart));
+                    _context.Add(order);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(ClearCart));
+                } else
+                {
+                    ViewData["Error"] = "Cart is empty. Go add some products!";
+                }
             }
             return View(order);
         }
