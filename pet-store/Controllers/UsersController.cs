@@ -118,7 +118,12 @@ namespace pet_store.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(ClearCart));
+        }
+
+        public async Task<IActionResult> ClearCart()
+        {
+            return View();
         }
 
         private async Task LoginUser(User user)
