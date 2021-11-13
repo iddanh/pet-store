@@ -64,10 +64,14 @@ namespace pet_store.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Supplier")]
-        public async Task<IActionResult> Create([Bind("Id,Name,City,Street,Apartment")] Branch branch)
+        public async Task<IActionResult> Create([Bind("Id,Name,City,Street,Apartment,UserId")] Branch branch)
         {
             if (ModelState.IsValid)
             {
+                if (!User.IsInRole(nameof(UserType.Admin)))
+                {
+                    branch.UserId = User.GetLoggedInUserId();
+                }
                 _context.Add(branch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

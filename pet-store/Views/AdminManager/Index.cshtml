@@ -38,7 +38,6 @@
 
     .fb-item {
         width: 50%;
-        float: left;
     }
 </style>
 <div id="fb-root"></div>
@@ -101,7 +100,7 @@
 <br />
 <br />
 
-<div>
+<div style="display: flex">
     <div class="fb-item">
         <form asp-action="PostOnFacbook">
             <input asp-for="Message" class="form-control" rows="5" />

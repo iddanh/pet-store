@@ -32,6 +32,9 @@ function populateCartDropdown() {
 
             let totalPrice = 0;
             data.forEach((product) => {
+                if (!product) {
+                    return;
+                }
                 $('#cart').append(`
                 <a class="cart-item text-decoration-none" href="/Products/Details/${product.id}">
                     <div class="cart-img-container">
@@ -47,7 +50,7 @@ function populateCartDropdown() {
                 totalPrice += product.price;
             });
             $('#cart_total').text(`${Math.round(totalPrice * 100) / 100}$`);
-            $('#cart-count').text(cart.length);
+            $('#cart-count').text(data.filter(p => p).length);
 
             $('.remove-from-cart').click((event) => {
                 event.preventDefault();
@@ -85,6 +88,9 @@ function populateCheckoutPage() {
             let productsList = [];
             let totalPrice = 0;
             data.forEach((product) => {
+                if (!product) {
+                    return;
+                }
                 $('#cart-content').append(`
                 <a class="cart-item text-decoration-none" href="/Products/Details/${product.id}"> 
                     <div class="cart-img-container">
