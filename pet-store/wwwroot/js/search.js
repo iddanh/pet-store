@@ -89,12 +89,8 @@ var rangeOne = document.querySelector('input[name="rangeOne"]'),
     };
 
 document.addEventListener('DOMContentLoaded', function () {
-    if (rangeOne) {
-        updateView.call(rangeOne);
-    }
-    if (rangeTwo) {
-        updateView.call(rangeTwo);
-    }
+    updateView.call(rangeOne);
+    updateView.call(rangeTwo);
     $('input[type="range"]').on('mouseup', function () {
         this.blur();
     }).on('mousedown input', function () {
