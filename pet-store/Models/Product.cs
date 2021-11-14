@@ -31,6 +31,7 @@ namespace pet_store.Models
         public Category Category { get; set; }
 
         [Required]
+        [Range(0, Int32.MaxValue)]
         public double Price { get; set; }
 
         public string Company { get; set; }
